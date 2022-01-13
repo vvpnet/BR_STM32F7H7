@@ -34,12 +34,12 @@ index e9a2649dd6..fed6712f0a 100644
 -	"bootargs_romfs=uclinux.physaddr=0x08180000 root=/dev/mtdblock0\0" \
 -	"bootcmd_romfs=setenv bootargs ${bootargs} ${bootargs_romfs};" \
 -	"bootm 0x08044000 - 0x08042000\0"
-+	"ipaddr=192.168.201.123\0" \
-+	"serverip=192.168.201.6\0" \
++	"ipaddr=192.168.55.123\0" \
++	"serverip=192.168.55.1\0" \
 +	"dtb_file=stm32f746/stm32f746-disco.dtb\0" \
 +	"kernel_file=stm32f746/zImage\0" \
-+	"dtb_addr=0xc0700000\0" \
-+	"kernel_addr=0xc0008000\0" \
++	"dtb_addr=0xd0700000\0" \
++	"kernel_addr=0xd0008000\0" \
 +	"netboot=tftp ${dtb_addr} ${dtb_file} && tftp ${kernel_addr} ${kernel_file} && bootz ${kernel_addr} - ${dtb_addr}\0" \
 +	"spiboot=sf probe && sf read ${dtb_addr} 0 4000 && sf read ${kernel_addr} 10000 200000 && bootz ${kernel_addr} - ${dtb_addr}\0" \
 +	"updatespi=sf probe && tftp ${dtb_addr} ${dtb_file} && sf erase 0 10000 && sf write ${dtb_addr} 0 ${filesize} && tftp ${kernel_addr} ${kernel_file} && sf erase 10000 200000 && sf write ${kernel_addr} 10000 ${filesize}\0" \
