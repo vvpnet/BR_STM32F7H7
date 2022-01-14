@@ -17,7 +17,7 @@ build:
 linux-rebuild:
 	make linux-rebuild -C $(dir_buildroot)
 	cp $(dir_buildroot)/output/images/zImage ${dir_publish}
-	cp $(dir_buildroot)/output/build/linux-custom/arch/arm/boot/dts/stm32f746-disco.dtb ${dir_publish}
+	cp $(dir_buildroot)/output/build/linux-stm32-dt-for-v4.15-1/arch/arm/boot/dts/stm32f746-disco.dtb ${dir_publish}
 
 flash_bootloader:
 	cd $(dir_buildroot)/output/build/host-openocd-0.11.0/tcl && ../../../host/usr/bin/openocd \
