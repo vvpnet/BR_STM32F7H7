@@ -3,6 +3,7 @@ dir_download = downloads
 dir_configs = configs
 dir_buildroot = buildroot
 dir_publish = /home/vpopov/minicom/send/5.6
+#	2019.11
 
 bootstrap:
 	mkdir -p $(dir_download)
