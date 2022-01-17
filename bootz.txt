@@ -1,0 +1,112 @@
+loady 0xd0008000
+
+loady 0xd0408000
+
+bootz 0xd0008000 - 0xd0408000
+
+Failed to execute /init (error -8)
+Starting init: /sbin/init exists but couldn't execute it (error -8)
+Starting init: /bin/sh exists but couldn't execute it (error -8)
+Kernel panic - not syncing: No working init found.  Try passing init= option to kernel. See Linux Documentation/admin-guide/init.rst for guidance.
+ ---[ end Kernel panic - not syncing: No working init found.  Try passing init= option to kernel. See Linux Documentation/admin-guide/init.rst for guidance.
+
+ 
+ U-Boot > loady 0xd0008000                                                                                                                       
+## Ready for binary (ymodem) download to 0xD0008000 at 115200 bps...                                                                            
+CCCCxyzModem - Cksum mode, 8599(SOH)/0(STX)/0(CAN) packets, 12 retries                                                                         
+## Total Size      = 0x0010cac8 = 1100488 Bytes                                                                                                 
+U-Boot > loady 0xd0408000
+## Ready for binary (ymodem) download to 0xD0408000 at 115200 bps...                                                                            
+CxyzModem - CRC mode, 100(SOH)/0(STX)/0(CAN) packets, 4 retries
+## Total Size      = 0x00003171 = 12657 Bytes
+U-Boot > bootz 0xd0008000 - 0xd0408000
+Kernel image @ 0xd0008000 [ 0x000000 - 0x10cac8 ]
+## Flattened Device Tree blob at d0408000
+   Booting using the fdt blob at 0xd0408000
+   Loading Device Tree to d059e000, end d05a4170 ... OK
+
+Starting kernel ...
+
+[    0.000000] Booting Linux on physical CPU 0x0
+[    0.000000] Linux version 4.15.7 (vpopov@ThinkPad-P14s) (gcc version 9.2.0 (Buildroot 2019.11)) #20 PREEMPT Wed Jan 12 16:45:38 +06 2022
+[    0.000000] CPU: ARMv7-M [411fc270] revision 0 (ARMv7M), cr=00000000
+[    0.000000] CPU: PIPT / VIPT nonaliasing data cache, PIPT instruction cache
+[    0.000000] OF: fdt: Machine model: STMicroelectronics STM32F767IGT6-LQFP176 board
+[    0.000000] debug: ignoring loglevel setting.
+[    0.000000] On node 0 totalpages: 2048
+[    0.000000]   Normal zone: 16 pages used for memmap
+[    0.000000]   Normal zone: 0 pages reserved
+[    0.000000]   Normal zone: 2048 pages, LIFO batch:0
+[    0.000000] pcpu-alloc: s0 r0 d32768 u32768 alloc=1*32768
+[    0.000000] pcpu-alloc: [0] 0 bootz 0xd0008000 - 0xd0408000
+[    0.000000] Built 1 zonelists, mobility grouping off.  Total pages: 2032
+[    0.000000] Kernel command line: console=ttyS0,115200 earlyprintk consoleblank=1 ignore_loglevel
+[    0.000000] Dentry cache hash table entries: 1024 (order: 0, 4096 bytes)
+[    0.000000] Inode-cache hash table entries: 1024 (order: 0, 4096 bytes)
+[    0.000000] Memory: 6140K/8192K available (1091K kernel code, 102K rwdata, 400K rodata, 104K init, 114K bss, 2052K reserved, 0K cma-reserved)
+[    0.000000] Virtual kernel memory layout:
+[    0.000000]     vector  : 0x00000000 - 0x00001000   (   4 kB)
+[    0.000000]     fixmap  : 0xffc00000 - 0xfff00000   (3072 kB)
+[    0.000000]     vmalloc : 0x00000000 - 0xffffffff   (4095 MB)
+[    0.000000]     lowmem  : 0xd0000000 - 0xd0800000   (   8 MB)
+[    0.000000]       .text : 0x(ptrval) - 0x(ptrval)   (1092 kB)
+[    0.000000]       .init : 0x(ptrval) - 0x(ptrval)   ( 104 kB)
+[    0.000000]       .data : 0x(ptrval) - 0x(ptrval)   ( 103 kB)
+[    0.000000]        .bss : 0x(ptrval) - 0x(ptrval)   ( 115 kB)
+[    0.000000] SLUB: HWalign=32, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+[    0.000000] Preemptible hierarchical RCU implementation.
+[    0.000000]  Tasks RCU enabled.
+[    0.000000] NR_IRQS: 16, nr_irqs: 16, preallocated irqs: 16
+[    0.000000] interrupt-controller@40013c00: bank0, External IRQs available:0x1ffffff
+[    0.000000] clocksource: arm_system_timer: mask: 0xffffff max_cycles: 0xffffff, max_idle_ns: 298634427 ns
+[    0.000000] ARM System timer initialized as clocksource
+[    0.000000] /soc/timer@40000c00: STM32 clockevent driver initialized (32 bits)                                                    
+[    0.000000] sched_clock: 32 bits at 100 Hz, resolution 10000000ns, wraps every 21474836475000000ns                                
+[    0.050000] Calibrating delay loop... 398.13 BogoMIPS (lpj=1990656)                                                               
+[    0.050000] pid_max: default: 4096 minimum: 301                                                                                   
+[    0.050000] Mount-cache hash table entries: 1024 (order: 0, 4096 bytes)                                                           
+[    0.050000] Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes)
+[    0.050000] Hierarchical SRCU implementation.
+[    0.050000] devtmpfs: initialized
+[    0.070000] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+[    0.070000] pinctrl core: initialized pinctrl subsystem
+[    0.090000] stm32f746-pinctrl soc:pin-controller: GPIOA bank added
+[    0.090000] stm32f746-pinctrl soc:pin-controller: GPIOB bank added
+[    0.090000] stm32f746-pinctrl soc:pin-controller: GPIOC bank added
+[    0.090000] stm32f746-pinctrl soc:pin-controller: GPIOD bank added
+[    0.090000] stm32f746-pinctrl soc:pin-controller: GPIOE bank added
+[    0.090000] stm32f746-pinctrl soc:pin-controller: GPIOF bank added
+[    0.100000] stm32f746-pinctrl soc:pin-controller: GPIOG bank added
+[    0.100000] stm32f746-pinctrl soc:pin-controller: GPIOH bank added
+[    0.100000] stm32f746-pinctrl soc:pin-controller: GPIOI bank added
+[    0.100000] stm32f746-pinctrl soc:pin-controller: GPIOJ bank added
+[    0.100000] stm32f746-pinctrl soc:pin-controller: GPIOK bank added
+[    0.100000] stm32f746-pinctrl soc:pin-controller: Pinctrl STM32 initialized
+[    0.120000] clocksource: Switched to clocksource arm_system_timer
+[    0.180000] workingset: timestamp_bits=30 max_order=11 bucket_order=0
+[    0.200000] random: fast init done
+[    0.210000] io scheduler noop registered (default)
+[    0.210000] io scheduler mq-deadline registered
+[    0.210000] io scheduler kyber registered
+[    0.210000] STM32 USART driver initialized
+[    0.210000] 40011000.serial: ttyS0 at MMIO 0x40011000 (irq = 31, base_baud = 6250000) is a stm32-usart
+[    0.600000] console [ttyS0] enabled
+[    0.600000] stm32-usart 40011000.serial: rx dma alloc failed
+[    0.610000] stm32-usart 40011000.serial: interrupt mode used for rx (no dma)
+[    0.620000] stm32-usart 40011000.serial: tx dma alloc failed
+[    0.620000] stm32-usart 40011000.serial: interrupt mode used for tx (no dma)
+[    0.640000] hctosys: unable to open rtc device (rtc0)
+[    0.650000] Freeing unused kernel memory: 104K
+[    0.650000] This architecture does not have kernel memory protection.
+[    0.660000] Failed to execute /init (error -8)
+[    0.660000] Starting init: /sbin/init exists but couldn't execute it (error -8)
+[    0.670000] Starting init: /bin/sh exists but couldn't execute it (error -8)
+[    0.680000] Kernel panic - not syncing: No working init found.  Try passing init= option to kernel. See Linux Documentation/admin-guide/init.rst for guidance.
+[    0.680000] ---[ end Kernel panic - not syncing: No working init found.  Try passing init= option to kernel. See Linux Documentation/admin-guide/init.rst for guidance.
+[   65.880000] random: crng init done
+
+Freeing unused kernel memory: 292K
+This architecture does not have kernel memory protection.
+Unhandled exception: IPSR = 00000006 LR = fffffff1
+CPU: 0 PID: 1 Comm: init Not tainted 4.15.7 #34
+Hardware name: STM32 (Device Tree Support)
