@@ -23,6 +23,7 @@ bootstrap:
 menuconfig:
 	make BR2_EXTERNAL=$(dir_external) $(def_stm32f767) -C $(dir_buildroot) menuconfig
 	make savedefconfig BR2_DEFCONFIG=$(dir_configs_stm32f767) -C $(dir_buildroot)
+	echo "Saved config $(dir_configs_stm32f767)"
 
 build:
 	make BR2_EXTERNAL=$(PREFIX) $(def_stm32f767) -C $(dir_buildroot)
