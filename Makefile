@@ -23,7 +23,17 @@ bootstrap:
 menuconfig:
 	make BR2_EXTERNAL=$(dir_external) $(def_stm32f767) -C $(dir_buildroot) menuconfig
 	make savedefconfig BR2_DEFCONFIG=$(dir_configs_stm32f767) -C $(dir_buildroot)
-	echo "Saved config $(dir_configs_stm32f767)"
+	@echo "Saved config $(dir_configs_stm32f767)"
+
+linux_menuconfig:
+	make -C $(dir_buildroot) linux-menuconfig
+	make linux-update-defconfig -C $(dir_buildroot)
+	echo "Saved Linux config."
+
+busybox_menuconfig:
+	make busybox-menuconfig -C $(dir_buildroot)
+	make busybox-update-config -C $(dir_buildroot)
+	@echo "Saved Busybox config."
 
 build:
 	make BR2_EXTERNAL=$(PREFIX) $(def_stm32f767) -C $(dir_buildroot)
