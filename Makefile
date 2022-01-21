@@ -14,9 +14,16 @@ dir_configs_stm32f767 = $(PREFIX)/configs/$(def_stm32f767)
 
 bootstrap:
 	mkdir -p $(dir_download)
-	mkdir -p $(dir_buildroot)
-	echo "Downloading $(tar_buildroot) to $(dir_download)"
-	wget --no-check-certificate -O $(dir_download)/$(tar_buildroot) $(url_buildroot)
+
+	@if [ -d "$(dir_buildroot)" ]; then \
+	    rm -R $(dir_buildroot); \
+	    echo "Removed $(dir_buildroot)"; \
+	fi
+	@mkdir -p $(dir_buildroot)
+	@if [ ! -f "$(dir_download)/$(tar_buildroot)" ]; then \
+	    echo "Downloading $(tar_buildroot) to $(dir_download)"; \
+	    wget --no-check-certificate -O $(dir_download)/$(tar_buildroot) $(url_buildroot); \
+	fi
 	tar zxvf $(dir_download)/$(tar_buildroot) -C $(dir_buildroot) --strip-components=1
 	make BR2_EXTERNAL=$(PREFIX) $(def_stm32f767) -C $(dir_buildroot)
 
@@ -28,7 +35,7 @@ menuconfig:
 linux_menuconfig:
 	make -C $(dir_buildroot) linux-menuconfig
 	make linux-update-defconfig -C $(dir_buildroot)
-	echo "Saved Linux config."
+	@echo "Saved Linux config."
 
 busybox_menuconfig:
 	make busybox-menuconfig -C $(dir_buildroot)
