@@ -27,7 +27,7 @@ After the build, the directory `stm32f767/ImageLinux` contains
  - compressed Linux kernel with linked RAM filesystem `zImage`
  - device tree blob `stm32f767-lqfp176.dtb`
 
-![alt text](https://github.com/vvpnet/STM32F746G_Buildroot/blob/master/doc/stm32f746g-disco_linux.png)
+![alt text](https://github.com/vvpnet/STM32F767IGT6-LQFP176_board_Buildroot/blob/stm32f767/doc/STM32F767-Cortex-M7-STM32F767IGT6-STM32.jpg)
 
 Changelog
 ---------
