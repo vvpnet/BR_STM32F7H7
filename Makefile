@@ -32,12 +32,12 @@ menuconfig:
 	make savedefconfig BR2_DEFCONFIG=$(dir_configs_stm32f767) -C $(dir_buildroot)
 	@echo "Saved config $(dir_configs_stm32f767)"
 
-linux_menuconfig:
+linux-menuconfig:
 	make -C $(dir_buildroot) linux-menuconfig
 	make linux-update-defconfig -C $(dir_buildroot)
 	@echo "Saved Linux config."
 
-busybox_menuconfig:
+busybox-menuconfig:
 	make busybox-menuconfig -C $(dir_buildroot)
 	make busybox-update-config -C $(dir_buildroot)
 	@echo "Saved Busybox config."
@@ -46,3 +46,10 @@ build:
 	make BR2_EXTERNAL=$(PREFIX) $(def_stm32f767) -C $(dir_buildroot)
 	make BR2_DEFCONFIG=$(dir_configs_stm32f767) -C $(dir_buildroot)
 
+uboot-menuconfig:
+	make -C $(dir_buildroot) uboot-menuconfig
+	@cp $(dir_buildroot)/output/build/uboot-2021.10/.config $(PREFIX)/stm32f767/uboot.config
+	@echo "Saved Uboot config."
+
+uboot_rebuild:
+	make uboot-reconfigure -C $(dir_buildroot)
