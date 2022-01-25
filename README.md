@@ -32,9 +32,14 @@ After the build, the directory `stm32f767/ImageLinux` contains
 Changelog
 ---------
 
+* 0.2
+  * U-Boot 2021.10
+  * Linux 5.10.х (support until 2026)
+  * Busybox 1.34.x
+
 * 0.1
   * Buildroot 2021.11
-  * GCC 11.x.x (external)
-  * U-Boot 2021.11
+  * GCC 11.x.x
+  * U-Boot 2021.10
   * Linux 4.14.256 (support until January 2024)
   * Busybox 1.34.x
