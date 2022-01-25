@@ -13,10 +13,10 @@ dir_buildroot = $(PREFIX)/buildroot
 dir_configs_stm32f767 = $(PREFIX)/configs/$(def_stm32f767)
 
 bootstrap:
-	mkdir -p $(dir_download)
+	@mkdir -p $(dir_download)
 
 	@if [ -d "$(dir_buildroot)" ]; then \
-	    rm -R $(dir_buildroot); \
+	    rm -f -R $(dir_buildroot); \
 	    echo "Removed $(dir_buildroot)"; \
 	fi
 	@mkdir -p $(dir_buildroot)
