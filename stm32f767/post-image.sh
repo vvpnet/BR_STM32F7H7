@@ -2,7 +2,7 @@
 # Deploy image and dtb to ResultDir
 
 ver_uboot="2021.10"
-ver_kernel="5.10.83"
+ver_kernel="4.19.219"
 dir_publish1="${BR2_EXTERNAL_STM32F767_PATH}/stm32f767/ImageLinux"
 dir_publish2="/home/vpopov/minicom/send/linux"
 
