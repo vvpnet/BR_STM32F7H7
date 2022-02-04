@@ -1,0 +1,4 @@
+.gitignore
+/downloads
+/buildroot
+/stm32f767/ImageLinux/
