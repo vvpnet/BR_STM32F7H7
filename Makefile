@@ -34,7 +34,7 @@ menuconfig:
 
 linux-menuconfig:
 	make -C $(dir_buildroot) linux-menuconfig
-	make linux-update-defconfig -C $(dir_buildroot)
+	make linux-update-config -C $(dir_buildroot)
 	@echo "Saved Linux config."
 
 busybox-menuconfig:
