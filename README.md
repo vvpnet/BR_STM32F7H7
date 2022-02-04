@@ -32,6 +32,11 @@ After the build, the directory `stm32f767/ImageLinux` contains
 Changelog
 ---------
 
+* 0.3
+  * SUPPORT QSPI (25q128fvsg)
+  * FIX ALLOCATOR RAM
+  * The kernel version 5.6.x is used, it is smaller size than 5.10. But we will return to version 5.10.
+
 * 0.2
   * U-Boot 2021.10
   * Linux 5.10.х (support until 2026)
