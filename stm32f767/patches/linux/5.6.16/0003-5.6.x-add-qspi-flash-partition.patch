@@ -1,0 +1,55 @@
+diff --git a/arch/arm/boot/dts/stm32f746-disco.dts b/arch/arm/boot/dts/stm32f746-disco.dts
+index 0b58a39db062..d183abbf2597 100644
+--- a/arch/arm/boot/dts/stm32f746-disco.dts
++++ b/arch/arm/boot/dts/stm32f746-disco.dts
+@@ -87,34 +87,21 @@ qflash0: w25q128fw@0 {
+ 		spi-rx-bus-width = <4>;
+ 		reg = <0x0>;
+ 
+-		partition@fsbl-uboot {
+-                        label = "fsbl-uboot";
+-                        reg = <0x0 0xe0000>;
+-                };
+-
+-                partition@uenv {
+-                        label = "uenv";
+-                        reg = <0xe0000 0x20000>;
+-                };
+-
+-                partition@device-tree {
+-                        label = "device-tree";
+-                        reg = <0x100000 0x20000>;
+-                };
+-
+-                partition@linux {
+-                        label = "linux";
+-                        reg = <0x120000 0x600000>;
+-                };
+-
+-                partition@ramfs {
+-                        label = "ramfs";
+-                        reg = <0x720000 0x4E0000>;
+-                };
+-
+-                partition@bitstream {
+-                        label = "bitstream";
+-                        reg = <0xC00000 0x400000>;
+-                };
++		partitions {
++		    compatible = "fixed-partitions";
++		    partition@0 {
++			label = "dtb";
++			reg = <0x0 0x20000>;
++			read-only;
++		    };
++		    partition@20000 {
++			label = "linux";
++			reg = <0x20000 0x300000>;
++		    };
++		    partition@320000 {
++			label = "rootfs";
++			reg = <0x320000 0x400000>;
++		    };
++		};
+ 	};
+ };

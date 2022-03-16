@@ -53,3 +53,7 @@ uboot-menuconfig:
 
 uboot_rebuild:
 	make uboot-reconfigure -C $(dir_buildroot)
+
+update-target:
+	rm -rf $(dir_buildroot)/output/target
+	find $(dir_buildroot)/output/ -name ".stamp_target_installed" | xargs rm -rf

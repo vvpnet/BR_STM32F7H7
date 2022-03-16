@@ -8,10 +8,11 @@ dir_publish2="/home/vpopov/minicom/send/linux"
 
 echo "Publish1 Files to" ${dir_publish1}
 
-export
-
 echo "Copy zImage to " ${dir_publish1}
 cp ${BINARIES_DIR}/zImage ${dir_publish1}
+
+echo "Copy uImage to " ${dir_publish1}
+cp ${BINARIES_DIR}/uImage ${dir_publish1}
 
 echo "Copy dtb to" ${dir_publish1}
 cp ${BUILD_DIR}/linux-${ver_kernel}/arch/arm/boot/dts/stm32f746-disco.dtb ${dir_publish1}/stm32f767-lqfp176.dtb

@@ -1,6 +1,54 @@
-loadx 0xd0000000
+loadx 0xD0008000
 loadx 0xd0300000
 bootz 0xd0000000 - 0xd0300000
+
+bootm 0xd0000000 - 0xd0300000
+
+1559936
+
+spiboot=sf probe 0 && sf read ${fdt_addr_r} 0x20000 0x20000 && sf read ${kernel_addr_r} 0x40000 0x300000 && bootm ${kernel_addr_r} ${fdt_addr_r}
+
+UPDATE TDF:
+mw.b 0xd0008000 ff 00x20000 && loadx 0xd0008000 && sf probe 0 && sf erase 0x0 0x20000 && sf write 0xd0008000 0x0 0x20000 
+
+UPDATE KERNEL:
+mw.b ${kernel_addr_r} ff 0x300000 && loadx ${kernel_addr_r} && sf probe 0 && sf erase 0x20000 0x300000 && sf write ${kernel_addr_r} 0x20000 0x300000 
+
+UPDATE ROOTFS:
+mw.b 0xd0008000 0xFF 0x400000 && loadx 0xd0008000 && sf probe 0 && sf erase 0x320000 0x400000 && sf write 0xd0008000 0x320000 0x400000 
+
+sf probe 0 && sf read ${kernel_addr_r} 0x320000 0x400000 && md.b ${kernel_addr_r} 0x100
+
+SETENV:
+setenv bootargs 'console=ttySTM0,115200 rootwait root=/dev/mtdblock2 rw rootfstype=jffs2 earlyprintk consoleblank=0'
+
+RUN JFFS2:
+setenv bootargs 'console=ttySTM0,115200 panic=5 rootwait root=/dev/mtdblock2 rw rootfstype=jffs2' && sf probe 0 && sf read ${fdt_addr_r} 0x0 0x20000 && sf read ${kernel_addr_r} 0x20000 0x300000 && bootz ${kernel_addr_r} - ${fdt_addr_r}
+
+setenv bootargs "console=ttyS0,115200 earlyprintk panic=5 rootwait mtdparts=spi0.0:128k(dtb)ro,3M(linux)ro,-(rootfs) root=31:2 rw rootfstype=jffs2" && sf probe 0 && sf read ${fdt_addr_r} 0x0 0x20000 && sf read ${kernel_addr_r} 0x20000 0x300000 && bootm ${kernel_addr_r} - ${fdt_addr_r}
+
+
+
+RUN BOOTM squashfs:
+setenv bootargs 'console=ttySTM0,115200 panic=5 rootwait root=/dev/mtdblock2 rootfstype=squashfs' && && sf probe 0 && sf read ${fdt_addr_r} 0x0 0x20000 && sf read ${kernel_addr_r} 0x20000 0x300000 && bootm ${kernel_addr_r} - ${fdt_addr_r}
+
+RUN BOOTZ squashfs:
+setenv bootargs 'console=ttySTM0,115200 panic=5 rootwait root=/dev/mtdblock2 rootfstype=squashfs' && && sf probe 0 && sf read ${fdt_addr_r} 0x0 0x20000 && sf read ${kernel_addr_r} 0x20000 0x300000 && bootz ${kernel_addr_r} - ${fdt_addr_r}
+
+setenv bootargs 'console=ttySTM0,115200 root=/dev/mtdblock3 rw rootwait rootfstype=btfts earlyprintk consoleblank=0 ignore_loglevel'
+
+
+RUN QSPI:
+sf probe 0 && sf read ${fdt_addr_r} 0x0 0x20000 && sf read ${kernel_addr_r} 0x20000 0x300000 && bootm ${kernel_addr_r} - ${fdt_addr_r}
+
+RUN ROM TDF+QSPI:
+loadx ${kernel_addr_r} && 
+sf probe 0 && sf read ${fdt_addr_r} 0x0 0x20000 && bootm ${kernel_addr_r} - ${fdt_addr_r}
+
+
+LOADLINUX whitout fdt:
+sf probe 0 && sf read ${kernel_addr_r} 0x40000 0x300000 && bootm ${kernel_addr_r}
+
 
 Kernel image @ 0xd0000000 [ 0x000000 - 0x161dd8 ]
 ## Flattened Device Tree blob at d0300000
