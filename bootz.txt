@@ -1,5 +1,7 @@
-loadx 0xD0008000
-loadx 0xd0300000
+loadx 0xc0008000
+loadx 0xc0700000
+env set bootargs "root=/dev/ram console=ttySTM0,115200"
+bootz 0xc0008000 - 0xc0700000
 bootz 0xd0000000 - 0xd0300000
 
 bootm 0xd0000000 - 0xd0300000
@@ -12,6 +14,9 @@ UPDATE TDF:
 mw.b 0xd0008000 ff 00x20000 && loadx 0xd0008000 && sf probe 0 && sf erase 0x0 0x20000 && sf write 0xd0008000 0x0 0x20000 
 
 UPDATE KERNEL:
+
+
+
 mw.b ${kernel_addr_r} ff 0x300000 && loadx ${kernel_addr_r} && sf probe 0 && sf erase 0x20000 0x300000 && sf write ${kernel_addr_r} 0x20000 0x300000 
 
 UPDATE ROOTFS:

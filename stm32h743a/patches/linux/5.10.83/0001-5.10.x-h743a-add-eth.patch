@@ -1,0 +1,301 @@
+diff --git a/arch/arm/boot/dts/stm32h743-pinctrl.dtsi b/arch/arm/boot/dts/stm32h743-pinctrl.dtsi
+index fa5dcb6a5fdd..39fe6207d498 100644
+--- a/arch/arm/boot/dts/stm32h743-pinctrl.dtsi
++++ b/arch/arm/boot/dts/stm32h743-pinctrl.dtsi
+@@ -175,15 +175,15 @@ pins {
+ 
+ 			ethernet_rmii: rmii-0 {
+ 				pins {
+-					pinmux = <STM32_PINMUX('G', 11, AF11)>,
+-						 <STM32_PINMUX('G', 13, AF11)>,
+-						 <STM32_PINMUX('G', 12, AF11)>,
+-						 <STM32_PINMUX('C', 4, AF11)>,
+-						 <STM32_PINMUX('C', 5, AF11)>,
+-						 <STM32_PINMUX('A', 7, AF11)>,
+-						 <STM32_PINMUX('C', 1, AF11)>,
++					pinmux = <STM32_PINMUX('G', 13, AF11)>,
++						 <STM32_PINMUX('G', 14, AF11)>,
++						 <STM32_PINMUX('B', 11, AF11)>,
+ 						 <STM32_PINMUX('A', 2, AF11)>,
+-						 <STM32_PINMUX('A', 1, AF11)>;
++						 <STM32_PINMUX('C', 1, AF11)>,
++						 <STM32_PINMUX('A', 1, AF11)>,
++						 <STM32_PINMUX('A', 7, AF11)>,
++						 <STM32_PINMUX('C', 4, AF11)>,
++						 <STM32_PINMUX('C', 5, AF11)>;
+ 					slew-rate = <2>;
+ 				};
+ 			};
+@@ -258,13 +258,13 @@ pins {
+ 
+ 			usart1_pins: usart1-0 {
+ 				pins1 {
+-					pinmux = <STM32_PINMUX('B', 14, AF4)>; /* USART1_TX */
++					pinmux = <STM32_PINMUX('A', 9, AF7)>; /* USART1_TX */
+ 					bias-disable;
+ 					drive-push-pull;
+ 					slew-rate = <0>;
+ 				};
+ 				pins2 {
+-					pinmux = <STM32_PINMUX('B', 15, AF4)>; /* USART1_RX */
++					pinmux = <STM32_PINMUX('A', 10, AF7)>; /* USART1_RX */
+ 					bias-disable;
+ 				};
+ 			};
+@@ -301,6 +301,16 @@ pins {
+ 					slew-rate = <2>;
+ 				};
+ 			};
++
++			usbotg_fs_pins_a: usbotg_fs-0 {
++				pins {
++					pinmux = <STM32_PINMUX('A', 11, AF10)>, /* OTG_FS_DM */
++						 <STM32_PINMUX('A', 12, AF10)>; /* OTG_FS_DP */
++					bias-disable;
++					drive-push-pull;
++					slew-rate = <2>;
++				};
++			};
+ 		};
+ 	};
+ };
+diff --git a/arch/arm/boot/dts/stm32h743.dtsi b/arch/arm/boot/dts/stm32h743.dtsi
+index 7febe19e780d..44221a504ffc 100644
+--- a/arch/arm/boot/dts/stm32h743.dtsi
++++ b/arch/arm/boot/dts/stm32h743.dtsi
+@@ -373,7 +373,7 @@ exti: interrupt-controller@58000000 {
+ 			interrupt-controller;
+ 			#interrupt-cells = <2>;
+ 			reg = <0x58000000 0x400>;
+-			interrupts = <1>, <2>, <3>, <6>, <7>, <8>, <9>, <10>, <23>, <40>, <41>, <62>, <76>;
++			interrupts = <1>, <2>, <3>, <6>, <7>, <8>, <9>, <10>, <23>, <40>, <41>, <76>;
+ 		};
+ 
+ 		syscfg: syscon@58000400 {
+@@ -544,15 +544,16 @@ adc3: adc@0 {
+ 		};
+ 
+ 		mac: ethernet@40028000 {
+-			compatible = "st,stm32-dwmac", "snps,dwmac-4.10a";
++			compatible = "st,stm32h7-dwmac", "snps,dwmac-4.10a";
+ 			reg = <0x40028000 0x8000>;
+ 			reg-names = "stmmaceth";
+-			interrupts = <61>;
+-			interrupt-names = "macirq";
+-			clock-names = "stmmaceth", "mac-clk-tx", "mac-clk-rx";
+-			clocks = <&rcc ETH1MAC_CK>, <&rcc ETH1TX_CK>, <&rcc ETH1RX_CK>;
++			clock-names = "stmmaceth", "mac-clk-tx", "mac-clk-rx", "syscfg-clk";
++			clocks = <&rcc ETH1MAC_CK>,<&rcc ETH1TX_CK>,<&rcc ETH1RX_CK>,<&rcc SYSCFG_CK>;
++			reset-names = "stmmaceth";
++			resets = <&rcc STM32H7_AHB1_RESET(ETH1MAC)>;
++			interrupts = <61>, <62>;
++			interrupt-names = "macirq", "eth_wake_irq";
+ 			st,syscon = <&syscfg 0x4>;
+-			snps,pbl = <8>;
+ 			status = "disabled";
+ 		};
+ 	};
+diff --git a/arch/arm/boot/dts/stm32h743i-eval.dts b/arch/arm/boot/dts/stm32h743i-eval.dts
+index 8f398178f5e5..22711fc2bbca 100644
+--- a/arch/arm/boot/dts/stm32h743i-eval.dts
++++ b/arch/arm/boot/dts/stm32h743i-eval.dts
+@@ -53,13 +53,28 @@ chosen {
+ 		stdout-path = "serial0:115200n8";
+ 	};
+ 
+-	memory@d0000000 {
+-		device_type = "memory";
+-		reg = <0xd0000000 0x2000000>;
++	memory {
++		reg = <0xc0000000 0x2000000>;
++	};
++
++	reserved-memory {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges;
++
++		linux,dma {
++			compatible = "shared-dma-pool";
++			no-map;
++			reg = <0xc1d00000 0x200000>;
++			alignment = <0x2000>;
++			linux,dma-default;
++		};
++
+ 	};
+ 
+ 	aliases {
+ 		serial0 = &usart1;
++		eth0 = &mac;
+ 	};
+ 
+ 	vdda: regulator-vdda {
+@@ -69,21 +84,6 @@ vdda: regulator-vdda {
+ 		regulator-max-microvolt = <3300000>;
+ 		regulator-always-on;
+ 	};
+-
+-	v2v9_sd: regulator-v2v9_sd {
+-		compatible = "regulator-fixed";
+-		regulator-name = "v2v9_sd";
+-		regulator-min-microvolt = <2900000>;
+-		regulator-max-microvolt = <2900000>;
+-		regulator-always-on;
+-	};
+-
+-	usbotg_hs_phy: usb-phy {
+-		#phy-cells = <0>;
+-		compatible = "usb-nop-xceiv";
+-		clocks = <&rcc USB1ULPI_CK>;
+-		clock-names = "main_clk";
+-	};
+ };
+ 
+ &adc_12 {
+@@ -114,47 +114,40 @@ &rtc {
+ };
+ 
+ &mac {
+-	status = "disabled";
+-	pinctrl-0	= <&ethernet_rmii>;
+-	pinctrl-names	= "default";
+-	phy-mode	= "rmii";
+-	phy-handle	= <&phy0>;
+-
++	status = "okay";
++	pinctrl-0 = <&ethernet_rmii>;
++	phy-mode = "rmii";
++	phy-handle = <&phy0>;
++	max-speed = <100>;
++	clock_in_out = "input";
++	snps,reset-gpio = <&gpiob 12 0>;
++	rx-fifo-depth = <2048>;
++	tx-fifo-depth = <2048>;
++	snps,no-pbl-x8;
++	snps,txpbl = <32>;
++	snps,rxpbl = <32>;
++	snps,fixed-burst;
++	snps,aal;
++	snps,reset-delays-us = <0 10000 1000000>;
+ 	mdio0 {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		compatible = "snps,dwmac-mdio";
+ 		phy0: ethernet-phy@0 {
+-			reg = <0>;
++                        reg = <0>;
+ 		};
+ 	};
+ };
+ 
+-&sdmmc1 {
+-	pinctrl-names = "default", "opendrain", "sleep";
+-	pinctrl-0 = <&sdmmc1_b4_pins_a &sdmmc1_dir_pins_a>;
+-	pinctrl-1 = <&sdmmc1_b4_od_pins_a &sdmmc1_dir_pins_a>;
+-	pinctrl-2 = <&sdmmc1_b4_sleep_pins_a &sdmmc1_dir_sleep_pins_a>;
+-	broken-cd;
+-	st,sig-dir;
+-	st,neg-edge;
+-	st,use-ckin;
+-	bus-width = <4>;
+-	vmmc-supply = <&v2v9_sd>;
+-	status = "okay";
+-};
+-
+ &usart1 {
+ 	pinctrl-0 = <&usart1_pins>;
+ 	pinctrl-names = "default";
+ 	status = "okay";
+ };
+ 
+-&usbotg_hs {
+-	pinctrl-0 = <&usbotg_hs_pins_a>;
++&usbotg_fs {
++	dr_mode = "host";
++	pinctrl-0 = <&usbotg_fs_pins_a>;
+ 	pinctrl-names = "default";
+-	phys = <&usbotg_hs_phy>;
+-	phy-names = "usb2-phy";
+-	dr_mode = "otg";
+ 	status = "okay";
+-};
++};
+\ No newline at end of file
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
+index 5d4df4c5254e..dc8d6c9704ff 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
+@@ -23,6 +23,7 @@
+ #include "stmmac_platform.h"
+ 
+ #define SYSCFG_MCU_ETH_MASK		BIT(23)
++#define SYSCFG_H7_ETH_MASK		GENMASK(23, 21)
+ #define SYSCFG_MP1_ETH_MASK		GENMASK(23, 16)
+ #define SYSCFG_PMCCLRR_OFFSET		0x40
+ 
+@@ -137,6 +138,10 @@ static int stm32_dwmac_init(struct plat_stmmacenet_data *plat_dat)
+ 			clk_disable_unprepare(dwmac->clk_tx);
+ 		}
+ 	}
++#ifdef CONFIG_MACH_STM32H743
++	writel(0x3800000, (void __iomem *)0x58000404);
++	pr_info("stm32h7 remap 0x%x\n",readl((void __iomem *)0x58000404));
++#endif
+ 
+ 	return ret;
+ }
+@@ -359,6 +364,30 @@ static int stm32mp1_parse_data(struct stm32_dwmac *dwmac,
+ 	return err;
+ }
+ 
++static int stm32h7_parse_data(struct stm32_dwmac *dwmac,
++			       struct device *dev)
++{
++
++	/* Check if internal clk from RCC selected */
++	if (dwmac->ext_phyclk) {
++		/*  Get ETH_CLK clocks */
++		dwmac->clk_eth_ck = devm_clk_get(dev, "eth-ck");
++		if (IS_ERR(dwmac->clk_eth_ck)) {
++			dev_err(dev, "No ETH CK clock provided...\n");
++			return PTR_ERR(dwmac->clk_eth_ck);
++		}
++	}
++
++	/*  Clock for sysconfig */
++	dwmac->syscfg_clk = devm_clk_get(dev, "syscfg-clk");
++	if (IS_ERR(dwmac->syscfg_clk)) {
++		dev_err(dev, "No syscfg clock provided...\n");
++		return PTR_ERR(dwmac->syscfg_clk);
++	}
++
++	return 0;
++}
++
+ static int stm32_dwmac_probe(struct platform_device *pdev)
+ {
+ 	struct plat_stmmacenet_data *plat_dat;
+@@ -509,6 +538,14 @@ static struct stm32_ops stm32mcu_dwmac_data = {
+ 	.syscfg_eth_mask = SYSCFG_MCU_ETH_MASK
+ };
+ 
++static struct stm32_ops stm32h7_dwmac_data = {
++	.set_mode = stm32mcu_set_mode,
++	.clk_prepare = stm32mp1_clk_prepare,
++	.suspend = stm32mcu_suspend,
++	.parse_data = stm32h7_parse_data,
++	.syscfg_eth_mask = SYSCFG_H7_ETH_MASK
++};
++
+ static struct stm32_ops stm32mp1_dwmac_data = {
+ 	.set_mode = stm32mp1_set_mode,
+ 	.clk_prepare = stm32mp1_clk_prepare,
+@@ -521,6 +558,7 @@ static struct stm32_ops stm32mp1_dwmac_data = {
+ static const struct of_device_id stm32_dwmac_match[] = {
+ 	{ .compatible = "st,stm32-dwmac", .data = &stm32mcu_dwmac_data},
+ 	{ .compatible = "st,stm32mp1-dwmac", .data = &stm32mp1_dwmac_data},
++	{ .compatible = "st,stm32h7-dwmac", .data = &stm32h7_dwmac_data},
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, stm32_dwmac_match);

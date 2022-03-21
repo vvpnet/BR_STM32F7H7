@@ -1,4 +1,5 @@
 .gitignore
 /downloads
 /buildroot
-/stm32f767/ImageLinux/
+/stm32f767l/images/
+/stm32h743a/images/

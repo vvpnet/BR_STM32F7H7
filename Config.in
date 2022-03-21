@@ -1,1 +1,1 @@
-source "$BR2_EXTERNAL_STM32F767_PATH/package/hello/Config.in"
+source "$BR2_EXTERNAL_STM32F7H7_PATH/package/hello/Config.in"
