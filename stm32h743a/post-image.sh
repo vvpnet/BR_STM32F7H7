@@ -1,7 +1,7 @@
 #!/bin/sh
 # Deploy image and dtb to ResultDir
 
-ver_uboot="2018.11"
+ver_uboot="2021.10"
 ver_kernel="5.10.83"
 dir_publish1="${BR2_EXTERNAL_STM32F7H7_PATH}/stm32h743a/images"
 

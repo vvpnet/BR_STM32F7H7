@@ -13,6 +13,8 @@ dir_buildroot = $(PREFIX)/buildroot
 
 dir_configs_stm32 = $(PREFIX)/configs/$(def_stm32)
 
+getval = $(shell (grep -m 1 ${1} $(dir_configs_stm32)) | (sed 's/^.*=//g'))
+
 bootstrap:
 	@mkdir -p $(dir_download)
 	@if [ -d "$(dir_buildroot)" ]; then \
@@ -51,7 +53,7 @@ build:
 
 uboot-menuconfig:
 	make -C $(dir_buildroot) uboot-menuconfig
-	@cp $(dir_buildroot)/output/build/uboot-2021.10/.config $(PREFIX)/stm32$(stm)/uboot.config
+	@cp $(dir_buildroot)/output/build/uboot-$(call getval,BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE)/.config $(PREFIX)/stm32$(stm)/uboot.config
 	@echo "Saved Uboot config."
 
 uboot_rebuild:
