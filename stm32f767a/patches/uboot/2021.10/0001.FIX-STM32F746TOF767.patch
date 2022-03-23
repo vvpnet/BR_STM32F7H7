@@ -1,0 +1,203 @@
+diff --git a/arch/arm/dts/stm32f746-disco-u-boot.dtsi b/arch/arm/dts/stm32f746-disco-u-boot.dtsi
+index 4f34fc9a8c..60b1282fe3 100644
+--- a/arch/arm/dts/stm32f746-disco-u-boot.dtsi
++++ b/arch/arm/dts/stm32f746-disco-u-boot.dtsi
+@@ -36,7 +36,7 @@
+ 
+ 	led1 {
+ 		compatible = "st,led1";
+-		led-gpio = <&gpioi 1 0>;
++		led-gpio = <&gpiod 11 0>;
+ 	};
+ 
+ 	panel-rgb@0 {
+@@ -80,7 +80,7 @@
+ 
+ &fmc {
+ 	/* Memory configuration from sdram datasheet MT48LC_4M32_B2B5-6A */
+-	bank1: bank@0 {
++	bank2: bank@1 {
+ 		u-boot,dm-pre-reloc;
+ 		st,sdram-control = /bits/ 8 <NO_COL_8
+ 					     NO_ROW_12
+@@ -156,11 +156,11 @@
+ 				 <STM32_PINMUX('F', 1, AF12)>, /* A1 */
+ 				 <STM32_PINMUX('F', 0, AF12)>, /* A0 */
+ 
+-				 <STM32_PINMUX('H', 3, AF12)>, /* SDNE0 */
+-				 <STM32_PINMUX('H', 5, AF12)>, /* SDNWE */
++				 <STM32_PINMUX('H', 6, AF12)>, /* SDNE1 */
++				 <STM32_PINMUX('C', 0, AF12)>, /* SDNWE */
+ 				 <STM32_PINMUX('F',11, AF12)>, /* SDNRAS */
+ 				 <STM32_PINMUX('G',15, AF12)>, /* SDNCAS */
+-				 <STM32_PINMUX('C', 3, AF12)>, /* SDCKE0 */
++				 <STM32_PINMUX('H', 7, AF12)>, /* SDCKE1 */
+ 				 <STM32_PINMUX('G', 8, AF12)>; /* SDCLK> */
+ 			slew-rate = <2>;
+ 		};
+@@ -204,10 +204,10 @@
+ 		pins {
+ 			pinmux = <STM32_PINMUX('B', 2, AF9)>, /* CLK */
+ 				 <STM32_PINMUX('B', 6, AF10)>, /* BK1_NCS */
+-				 <STM32_PINMUX('D',11, AF9)>, /* BK1_IO0 */
+-				 <STM32_PINMUX('D',12, AF9)>, /* BK1_IO1 */
+-				 <STM32_PINMUX('D',13, AF9)>, /* BK1_IO3 */
+-				 <STM32_PINMUX('E', 2, AF9)>; /* BK1_IO2 */
++				 <STM32_PINMUX('F', 8, AF10)>, /* BK1_IO0 */
++				 <STM32_PINMUX('F', 9, AF10)>, /* BK1_IO1 */
++				 <STM32_PINMUX('F', 6, AF9)>, /* BK1_IO3 */
++				 <STM32_PINMUX('F', 7, AF9)>; /* BK1_IO2 */
+ 			slew-rate = <2>;
+ 		};
+ 	};
+@@ -229,7 +229,7 @@
+ 
+ &qspi {
+ 	reg = <0xA0001000 0x1000>, <0x90000000 0x1000000>;
+-	qflash0: n25q128a@0 {
++	qflash0: w25q128fw@0 {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		compatible = "jedec,spi-nor";
+diff --git a/arch/arm/dts/stm32f746-disco.dts b/arch/arm/dts/stm32f746-disco.dts
+index 9430dc08ec..59a326899d 100644
+--- a/arch/arm/dts/stm32f746-disco.dts
++++ b/arch/arm/dts/stm32f746-disco.dts
+@@ -19,9 +19,9 @@
+ 		stdout-path = "serial0:115200n8";
+ 	};
+ 
+-	memory@c0000000 {
++	memory@d0000000 {
+ 		device_type = "memory";
+-		reg = <0xC0000000 0x800000>;
++		reg = <0xD0000000 0x800000>;
+ 	};
+ 
+ 	aliases {
+@@ -74,7 +74,7 @@
+ };
+ 
+ &usart1 {
+-	pinctrl-0 = <&usart1_pins_b>;
++	pinctrl-0 = <&usart1_pins_a>;
+ 	pinctrl-names = "default";
+ 	status = "okay";
+ };
+diff --git a/board/st/stm32f746-disco/stm32f746-disco.c b/board/st/stm32f746-disco/stm32f746-disco.c
+index efa38a0e26..e51ba5ffd1 100644
+--- a/board/st/stm32f746-disco/stm32f746-disco.c
++++ b/board/st/stm32f746-disco/stm32f746-disco.c
+@@ -111,10 +111,13 @@ int board_late_init(void)
+ 				   &gpio, GPIOD_IS_IN);
+ 
+ 	if (dm_gpio_is_valid(&gpio)) {
+-		if (dm_gpio_get_value(&gpio))
++		if (dm_gpio_get_value(&gpio)) {
++			env_set("button", "HIGH");
+ 			puts("usr button is at HIGH LEVEL\n");
+-		else
++		} else {
++			env_set("button", "LOW");
+ 			puts("usr button is at LOW LEVEL\n");
++		}
+ 	}
+ 
+ 	return 0;
+diff --git a/configs/stm32f469-discovery_defconfig b/configs/stm32f469-discovery_defconfig
+index 7960618d46..e8b9be5ee7 100644
+--- a/configs/stm32f469-discovery_defconfig
++++ b/configs/stm32f469-discovery_defconfig
+@@ -34,3 +34,4 @@ CONFIG_SPI_FLASH_STMICRO=y
+ CONFIG_SPI=y
+ CONFIG_DM_SPI=y
+ CONFIG_STM32_QSPI=y
++CONFIG_SPL_SPI_SUNXI = y
+\ No newline at end of file
+diff --git a/configs/stm32f746-disco_defconfig b/configs/stm32f746-disco_defconfig
+index 05d7ec2d79..4b358836cb 100644
+--- a/configs/stm32f746-disco_defconfig
++++ b/configs/stm32f746-disco_defconfig
+@@ -44,13 +44,14 @@ CONFIG_MTD=y
+ CONFIG_DM_MTD=y
+ CONFIG_MTD_NOR_FLASH=y
+ CONFIG_DM_SPI_FLASH=y
+-CONFIG_SPI_FLASH_MACRONIX=y
+-CONFIG_SPI_FLASH_STMICRO=y
++CONFIG_SPI_FLASH_WINBOND=y
++# CONFIG_SPI_FLASH_STMICRO is not set
+ CONFIG_PHY_SMSC=y
+ CONFIG_DM_ETH=y
+ CONFIG_ETH_DESIGNWARE=y
+ CONFIG_MII=y
+ # CONFIG_PINCTRL_FULL is not set
++CONFIG_SPL_SPI_SUNXI = y
+ CONFIG_SPI=y
+ CONFIG_DM_SPI=y
+ CONFIG_STM32_QSPI=y
+diff --git a/configs/stm32f769-disco_defconfig b/configs/stm32f769-disco_defconfig
+index 40f94ac772..1eb2e5a201 100644
+--- a/configs/stm32f769-disco_defconfig
++++ b/configs/stm32f769-disco_defconfig
+@@ -39,6 +39,7 @@ CONFIG_NETCONSOLE=y
+ # CONFIG_SPL_BLK is not set
+ # CONFIG_SPL_DM_MMC is not set
+ CONFIG_ARM_PL180_MMCI=y
++CONFIG_SPL_SPI_SUNXI = y
+ CONFIG_MTD=y
+ CONFIG_DM_MTD=y
+ CONFIG_MTD_NOR_FLASH=y
+diff --git a/include/configs/stm32f746-disco.h b/include/configs/stm32f746-disco.h
+index 08d050adfa..5b207c07a0 100644
+--- a/include/configs/stm32f746-disco.h
++++ b/include/configs/stm32f746-disco.h
+@@ -16,10 +16,10 @@
+ #define CONFIG_SYS_INIT_SP_ADDR		0x20050000
+ 
+ #ifdef CONFIG_SUPPORT_SPL
+-#define CONFIG_SYS_LOAD_ADDR		0x08008000
++#define CONFIG_SYS_LOAD_ADDR           0x08008000
+ #else
+-#define CONFIG_SYS_LOAD_ADDR		0xC0400000
+-#define CONFIG_LOADADDR			0xC0400000
++#define CONFIG_SYS_LOAD_ADDR           0xD0400000
++#define CONFIG_LOADADDR                0xD0400000
+ #endif
+ 
+ /*
+@@ -43,23 +43,27 @@
+ 
+ #define CONFIG_SYS_CBSIZE		1024
+ 
+-#define CONFIG_SYS_MALLOC_LEN		(1 * 1024 * 1024)
++#define CONFIG_SYS_MALLOC_LEN          (1 * 1024 * 1024)
+ 
+ #define BOOT_TARGET_DEVICES(func) \
+ 	func(MMC, mmc, 0)
+ 
+ #include <config_distro_bootcmd.h>
+ #define CONFIG_EXTRA_ENV_SETTINGS				\
+-			"kernel_addr_r=0xC0008000\0"		\
++			"kernel_addr_r=0xD0008000\0"		\
+ 			"fdtfile=stm32f746-disco.dtb\0"	\
+-			"fdt_addr_r=0xC0408000\0"		\
+-			"scriptaddr=0xC0418000\0"		\
+-			"pxefile_addr_r=0xC0428000\0" \
+-			"ramdisk_addr_r=0xC0438000\0"		\
++			"fdt_addr_r=0xD0408000\0"		\
++			"pxefile_addr_r=0xD0428000\0" \
++			"ipaddr=192.168.0.123\0" \
++			"serverip=192.168.0.122\0" \
++			"kernel_file=stm32f746/zImage\0" \
++			"netboot=tftp ${fdt_addr_r} ${dtb_file} && tftp ${kernel_addr_r} ${kernel_file} && bootz ${kernel_addr_r} - ${fdt_addr_r}\0" \
++			"spiboot=sf probe && sf read ${fdt_addr_r} 0 4000 && sf read ${kernel_addr_r} 10000 200000 && bootz ${kernel_addr_r} - ${fdt_addr_r}\0" \
++			"mmcboot=mmc dev 0 && fatload mmc 0 ${fdt_addr_r} /${dtb_file} && fatload mmc 0 ${kernel_addr_r} /${kernel_file} && icache off && bootz ${kernel_addr_r} - ${fdt_addr_r}\0" \
++			"updatespi=sf probe && tftp ${fdt_addr_r} ${dtb_file} && sf erase 0 10000 && sf write ${fdt_addr_r} 0 ${filesize} && tftp ${kernel_addr_r} ${kernel_file} && sf erase 10000 200000 && sf write ${kernel_addr_r} 10000 ${filesize}\0" \
++			"conditionalboot=if test \"${button}\" = \"LOW\"; then run spiboot; fi; run mmcboot\0" \
+ 			BOOTENV
+ 
+-#define CONFIG_DISPLAY_BOARDINFO
+-
+ /* For SPL */
+ #ifdef CONFIG_SUPPORT_SPL
+ #define CONFIG_SPL_STACK		CONFIG_SYS_INIT_SP_ADDR

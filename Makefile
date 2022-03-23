@@ -4,16 +4,18 @@ PREFIX = $(shell pwd)
 tar_buildroot = buildroot-2021.11.tar.gz
 url_buildroot = https://buildroot.org/downloads/$(tar_buildroot)
 
-
 def_stm32 = stm32$(stm)_defconfig
+dev_stm32 = .currentstm
 
 dir_external = $(PREFIX)
 dir_download = $(PREFIX)/downloads
 dir_buildroot = $(PREFIX)/buildroot
 
-dir_configs_stm32 = $(PREFIX)/configs/$(def_stm32)
 
-getval = $(shell (grep -m 1 ${1} $(dir_configs_stm32)) | (sed 's/^.*=//g'))
+defstm = $(shell cat $(dev_stm32))
+cfgstm = $(PREFIX)/configs/$(call defstm)
+dirstm = $(shell echo "$(PREFIX)/$(call defstm)" | (sed 's/_defconfig//g'))
+getval = $(shell (grep -m 1 ${1} $(call cfgstm)) | (sed 's/^.*=//g'))
 
 bootstrap:
 	@mkdir -p $(dir_download)
@@ -26,16 +28,25 @@ bootstrap:
 	    echo "Downloading $(tar_buildroot) to $(dir_download)"; \
 	    wget --no-check-certificate -O $(dir_download)/$(tar_buildroot) $(url_buildroot); \
 	fi
-#	@if [ ! -f "$(dev_stm)" ]; then \
-#	    touch $(dev_stm); \
-#	fi
+	@if [ ! -f "$(dev_stm32)" ]; then \
+	    touch $(dev_stm32); \
+	fi
+	@echo $(def_stm32) > $(dev_stm32)
+
 	tar zxvf $(dir_download)/$(tar_buildroot) -C $(dir_buildroot) --strip-components=1
-	make BR2_EXTERNAL=$(PREFIX) $(def_stm32) -C $(dir_buildroot)
+	make BR2_EXTERNAL=$(PREFIX) $(call defstm) -C $(dir_buildroot)
+
+checkout:
+	@if [ ! -f "$(dev_stm32)" ]; then \
+	    touch $(dev_stm32); \
+	fi
+	@echo $(def_stm32) > $(dev_stm32)
+	make BR2_EXTERNAL=$(PREFIX) $(call defstm) -C $(dir_buildroot)
 
 menuconfig:
-	make BR2_EXTERNAL=$(dir_external) $(def_stm32) -C $(dir_buildroot) menuconfig
-	make savedefconfig BR2_DEFCONFIG=$(dir_configs_stm32) -C $(dir_buildroot)
-	@echo "Saved config $(dir_configs_stm32)"
+	make BR2_EXTERNAL=$(dir_external) $(call defstm) -C $(dir_buildroot) menuconfig
+	make savedefconfig BR2_DEFCONFIG=$(call cfgstm) -C $(dir_buildroot)
+	@echo "Saved config $(call cfgstm)"
 
 linux-menuconfig:
 	make -C $(dir_buildroot) linux-menuconfig
@@ -48,12 +59,12 @@ busybox-menuconfig:
 	@echo "Saved Busybox config."
 
 build:
-	make BR2_EXTERNAL=$(PREFIX) $(def_stm32) -C $(dir_buildroot)
-	make BR2_DEFCONFIG=$(dir_configs_stm32) -C $(dir_buildroot)
+	make BR2_EXTERNAL=$(PREFIX) $(call defstm) -C $(dir_buildroot)
+	make BR2_DEFCONFIG=$(call cfgstm) -C $(dir_buildroot)
 
 uboot-menuconfig:
 	make -C $(dir_buildroot) uboot-menuconfig
-	@cp $(dir_buildroot)/output/build/uboot-$(call getval,BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE)/.config $(PREFIX)/stm32$(stm)/uboot.config
+	@cp $(dir_buildroot)/output/build/uboot-$(call getval,BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE)/.config $(call dirstm)/uboot.config
 	@echo "Saved Uboot config."
 
 uboot_rebuild:
@@ -67,12 +78,14 @@ help:
 	@echo 'SUPPORT STM32 BOARD (stm=*):'
 	@echo '		f767l - STM32F767IGT6 LQFP176'
 	@echo '		h743a - STM32H743 APOLLO'
+	@echo '		f767a - STMF767 APOLLO'
 	@echo
 	@echo 'Support command:'
 	@echo '		make bootstrap stm=f767l'
-	@echo '		make build stm=f767l'
-	@echo '		make menuconfig stm=f767l'
-	@echo '		make uboot-menuconfig stm=f767l'
+	@echo '		make checkout stm=f767l'
+	@echo '		make build'
+	@echo '		make menuconfig'
+	@echo '		make uboot-menuconfig'
 	@echo '		make linux-menuconfig'
 	@echo '		make busybox-menuconfig'
 	@echo '		make uboot-menuconfig'

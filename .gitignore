@@ -1,5 +1,7 @@
 .gitignore
+.currentstm
 /downloads
 /buildroot
 /stm32f767l/images/
 /stm32h743a/images/
+/stm32f767a/images/

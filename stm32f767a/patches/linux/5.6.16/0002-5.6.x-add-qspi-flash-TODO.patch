@@ -1,0 +1,100 @@
+diff --git a/arch/arm/boot/dts/stm32f7-pinctrl.dtsi b/arch/arm/boot/dts/stm32f7-pinctrl.dtsi
+index fe4cfda72a47..8a9d77862715 100644
+--- a/arch/arm/boot/dts/stm32f7-pinctrl.dtsi
++++ b/arch/arm/boot/dts/stm32f7-pinctrl.dtsi
+@@ -284,6 +284,18 @@ pins2 {
+ 					slew-rate = <2>;
+ 				};
+ 			};
++
++			qspi_pins: qspi@0 {
++				pins {
++					pinmux = <STM32_PINMUX('B', 2, AF9)>, /* CLK */
++						 <STM32_PINMUX('B', 6, AF10)>, /* BK1_NCS */
++						 <STM32_PINMUX('F', 8, AF10)>, /* BK1_IO0 */
++						 <STM32_PINMUX('F', 9, AF10)>, /* BK1_IO1 */
++						 <STM32_PINMUX('F', 6, AF9)>, /* BK1_IO3 */
++						 <STM32_PINMUX('F', 7, AF9)>; /* BK1_IO2 */
++					slew-rate = <2>;
++				};
++			};
+ 		};
+ 	};
+ };
+diff --git a/arch/arm/boot/dts/stm32f746-disco.dts b/arch/arm/boot/dts/stm32f746-disco.dts
+index ee4a78d77dca..0b58a39db062 100644
+--- a/arch/arm/boot/dts/stm32f746-disco.dts
++++ b/arch/arm/boot/dts/stm32f746-disco.dts
+@@ -75,3 +75,46 @@ &usart1 {
+ 	pinctrl-names = "default";
+ 	status = "okay";
+ };
++
++&qspi {
++	reg = <0xA0001000 0x1000>, <0x90000000 0x1000000>;
++	status = "okay";
++	qflash0: w25q128@0 {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		compatible = "winboud,w25q128", "jedec,spi-nor";
++		spi-max-frequency = <108000000>;
++		spi-rx-bus-width = <4>;
++		reg = <0x0>;
++
++		partition@fsbl-uboot {
++                        label = "fsbl-uboot";
++                        reg = <0x0 0xe0000>;
++                };
++
++                partition@uenv {
++                        label = "uenv";
++                        reg = <0xe0000 0x20000>;
++                };
++
++                partition@device-tree {
++                        label = "device-tree";
++                        reg = <0x100000 0x20000>;
++                };
++
++                partition@linux {
++                        label = "linux";
++                        reg = <0x120000 0x600000>;
++                };
++
++                partition@ramfs {
++                        label = "ramfs";
++                        reg = <0x720000 0x4E0000>;
++                };
++
++                partition@bitstream {
++                        label = "bitstream";
++                        reg = <0xC00000 0x400000>;
++                };
++	};
++};
+diff --git a/arch/arm/boot/dts/stm32f746.dtsi b/arch/arm/boot/dts/stm32f746.dtsi
+index 93c063796780..a0ed5fbaf6f5 100644
+--- a/arch/arm/boot/dts/stm32f746.dtsi
++++ b/arch/arm/boot/dts/stm32f746.dtsi
+@@ -639,6 +639,21 @@ usbotg_fs: usb@50000000 {
+ 			clock-names = "otg";
+ 			status = "disabled";
+ 		};
++
++		qspi: spi@A0001000 {
++			compatible = "st,stm32f469-qspi";
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg = <0xA0001000 0x1000>, <0x90000000 0x10000000>;
++			reg-names = "qspi", "qspi_mm";
++			interrupts = <91>;
++			spi-max-frequency = <108000000>;
++			clocks = <&rcc 0 STM32F7_AHB3_CLOCK(QSPI)>;
++			resets = <&rcc STM32F7_AHB3_RESET(QSPI)>;
++			pinctrl-0 = <&qspi_pins>;
++			pinctrl-names = "default";
++			status = "disabled";
++		};
+ 	};
+ };
+ 
