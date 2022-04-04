@@ -1,0 +1,31 @@
+diff --git a/arch/arm/boot/dts/stm32f769-disco.dts b/arch/arm/boot/dts/stm32f769-disco.dts
+index 0ce7fbc20fa4..27763ae33526 100644
+--- a/arch/arm/boot/dts/stm32f769-disco.dts
++++ b/arch/arm/boot/dts/stm32f769-disco.dts
+@@ -47,7 +47,7 @@
+ #include <dt-bindings/gpio/gpio.h>
+ 
+ / {
+-	model = "STMicroelectronics STM32F769-DISCO board";
++	model = "STMicroelectronics STM32F767-APOLLO board";
+ 	compatible = "st,stm32f769-disco", "st,stm32f769";
+ 
+ 	chosen {
+@@ -57,7 +57,7 @@ chosen {
+ 
+ 	memory@c0000000 {
+ 		device_type = "memory";
+-		reg = <0xC0000000 0x1000000>;
++		reg = <0xC0000000 0x2000000>;
+ 	};
+ 
+ 	aliases {
+@@ -67,7 +67,7 @@ aliases {
+ 	leds {
+ 		compatible = "gpio-leds";
+ 		led-green {
+-			gpios = <&gpioj 5 GPIO_ACTIVE_HIGH>;
++			gpios = <&gpiob 1 GPIO_ACTIVE_HIGH>;
+ 			linux,default-trigger = "heartbeat";
+ 		};
+ 		led-red {
