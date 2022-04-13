@@ -1,6 +1,8 @@
+env set bootargs "root=/dev/ram console=ttySTM0,115200" 
+
 loadx 0xc0008000
 loadx 0xc0700000
-env set bootargs "root=/dev/ram console=ttySTM0,115200"
+
 bootz 0xc0008000 - 0xc0700000
 bootz 0xd0000000 - 0xd0300000
 
