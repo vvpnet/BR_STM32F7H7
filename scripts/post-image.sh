@@ -13,6 +13,10 @@ dir_publish1="$dirstm/images"
 
 echo "********************************Publish Files to "${dir_publish1}"**************************************" 
 
+if [ ! -d ${dir_publish1} ]; then
+    mkdir ${dir_publish1}
+fi
+
 zimage=${BINARIES_DIR}/zImage
 if [ -f $zimage ]; then
     echo "Copy zImage to "${dir_publish1}
@@ -41,4 +45,10 @@ sboot=${BUILD_DIR}/uboot-${ver_uboot}/spl/u-boot-spl.bin
 if [ -f $sboot ]; then
     echo "Copy spl-boot.bin to "${dir_publish1}
     cp $sboot ${dir_publish1}/spl-uboot-${devstm1}.bin
+fi
+
+rootfsjffs2=${BINARIES_DIR}/rootfs.jffs2
+if [ -f $rootfsjffs2 ]; then
+    echo "Copy RootFS JFFS2 to "${dir_publish1}
+    cp $rootfsjffs2 ${dir_publish1}
 fi
