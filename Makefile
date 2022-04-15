@@ -42,6 +42,10 @@ checkout:
 	fi
 	@echo $(def_stm32) > $(dev_stm32)
 	make BR2_EXTERNAL=$(PREFIX) $(call defstm) -C $(dir_buildroot)
+	make linux-reinstall -C $(dir_buildroot)
+	make uboot-reinstall -C $(dir_buildroot)
+	rm -rf $(dir_buildroot)/output/target
+	find $(dir_buildroot)/output/ -name ".stamp_target_installed" | xargs rm -rf
 
 menuconfig:
 	make BR2_EXTERNAL=$(dir_external) $(call defstm) -C $(dir_buildroot) menuconfig

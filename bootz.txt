@@ -16,9 +16,6 @@ UPDATE TDF:
 mw.b 0xd0008000 ff 00x20000 && loadx 0xd0008000 && sf probe 0 && sf erase 0x0 0x20000 && sf write 0xd0008000 0x0 0x20000 
 
 UPDATE KERNEL:
-
-
-
 mw.b ${kernel_addr_r} ff 0x300000 && loadx ${kernel_addr_r} && sf probe 0 && sf erase 0x20000 0x300000 && sf write ${kernel_addr_r} 0x20000 0x300000 
 
 UPDATE ROOTFS:
@@ -34,10 +31,11 @@ setenv bootargs 'console=ttySTM0,115200 panic=5 rootwait root=/dev/mtdblock2 rw 
 
 setenv bootargs "console=ttyS0,115200 earlyprintk panic=5 rootwait mtdparts=spi0.0:128k(dtb)ro,3M(linux)ro,-(rootfs) root=31:2 rw rootfstype=jffs2" && sf probe 0 && sf read ${fdt_addr_r} 0x0 0x20000 && sf read ${kernel_addr_r} 0x20000 0x300000 && bootm ${kernel_addr_r} - ${fdt_addr_r}
 
+RUN BOOTz RAM:
+setenv bootargs 'root=/dev/ram console=ttySTM0,115200' && && sf probe 0 && sf read ${fdt_addr_r} 0x0 0x20000 && sf read ${kernel_addr_r} 0x20000 0x300000 && bootz ${kernel_addr_r} - ${fdt_addr_r}
 
-
-RUN BOOTM squashfs:
-setenv bootargs 'console=ttySTM0,115200 panic=5 rootwait root=/dev/mtdblock2 rootfstype=squashfs' && && sf probe 0 && sf read ${fdt_addr_r} 0x0 0x20000 && sf read ${kernel_addr_r} 0x20000 0x300000 && bootm ${kernel_addr_r} - ${fdt_addr_r}
+RUN BOOTZ squashfs:
+setenv bootargs 'console=ttySTM0,115200 panic=5 rootwait root=/dev/mtdblock2 rootfstype=squashfs' && && sf probe 0 && sf read ${fdt_addr_r} 0x0 0x20000 && sf read ${kernel_addr_r} 0x20000 0x300000 && bootz ${kernel_addr_r} - ${fdt_addr_r}
 
 RUN BOOTZ squashfs:
 setenv bootargs 'console=ttySTM0,115200 panic=5 rootwait root=/dev/mtdblock2 rootfstype=squashfs' && && sf probe 0 && sf read ${fdt_addr_r} 0x0 0x20000 && sf read ${kernel_addr_r} 0x20000 0x300000 && bootz ${kernel_addr_r} - ${fdt_addr_r}
@@ -57,10 +55,27 @@ LOADLINUX whitout fdt:
 sf probe 0 && sf read ${kernel_addr_r} 0x40000 0x300000 && bootm ${kernel_addr_r}
 
 
+**********************************************************************************************
+UPDATE DEVICE-TREE:
+mw.b 0xd0008000 ff 00x20000 && loadx 0xd0008000 && sf probe 0 && sf erase 0x300000 0x20000 && sf write 0xd0008000 0x300000 0x20000 
+
+UPDATE KERNEL:
+mw.b 0xd0008000 ff 0x300000 && loadx 0xd0008000 && sf probe 0 && sf erase 0x0 0x300000 && sf write 0xd0008000 0x0 0x300000 
+
+RUN BOOTM XIP KERNEL RAM:
+setenv bootargs 'root=/dev/ram console=ttySTM0,115200' && && sf probe 0 && sf read ${fdt_addr_r} 0x300000 0x20000 && bootm 0x90000000
+
+
+
+
 Kernel image @ 0xd0000000 [ 0x000000 - 0x161dd8 ]
 ## Flattened Device Tree blob at d0300000
    Booting using the fdt blob at 0xd0300000
    Loading Device Tree to d05a0000, end d05a4cd5 ... OK
+   
+90320000
+00300000
+00020000
 
 Starting kernel ...
 
