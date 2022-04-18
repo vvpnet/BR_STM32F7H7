@@ -1,0 +1,143 @@
+Uimage
+
+U-Boot > env set bootargs "console=ttySTM0,115200 rootwait root=/dev/mtdblock2 rootfstype=jffs2" && sf 0
+SF: Detected w25q128 with page size 256 Bytes, erase size 64 KiB, total 16 MiB
+device 0 offset 0x0, size 0x20000
+SF: 131072 bytes @ 0x0 Read: OK
+device 0 offset 0x20000, size 0x300000
+SF: 3145728 bytes @ 0x20000 Read: OK
+## Booting kernel from Legacy Image at d0020000 ...
+   Image Name:   Linux-5.6.16MODULE
+   Image Type:   ARM Linux Kernel Image (uncompressed)
+   Data Size:    1152000 Bytes = 1.1 MiB
+   Load Address: d0020000
+   Entry Point:  d0020000
+   Verifying Checksum ... OK
+## Flattened Device Tree blob at d0008000
+   Booting using the fdt blob at 0xd0008000
+   Loading Kernel Image
+   Loading Device Tree to d059a000, end d05a0a13 ... OK
+
+Starting kernel ...
+
+Uncompressing Linux... done, booting the kernel.
+[    0.000000][    T0] Booting Linux on physical CPU 0x0
+[    0.000000][    T0] Linux version 5.6.16MODULE (vpopov@ThinkPad-P14s) (gcc version 11.2.0 (Buildroot2
+[    0.000000][    T0] CPU: ARMv7-M [411fc270] revision 0 (ARMv7M), cr=00000000
+[    0.000000][    T0] CPU: PIPT / VIPT nonaliasing data cache, PIPT instruction cache
+[    0.000000][    T0] OF: fdt: Machine model: STMicroelectronics STM32F767IGT6-LQFP176 board
+[    0.000000][    T0] Using ARMv7 PMSA Compliant MPU. Region independence: No, Used 2 of 8 regions
+[    0.000000][    T0] On node 0 totalpages: 2048
+[    0.000000][    T0]   Normal zone: 16 pages used for memmap
+[    0.000000][    T0]   Normal zone: 0 pages reserved
+[    0.000000][    T0]   Normal zone: 2048 pages, LIFO batch:0
+[    0.000000][    T0] pcpu-alloc: s0 r0 d32768 u32768 alloc=1*32768
+[    0.000000][    T0] pcpu-alloc: [0] 0 
+[    0.000000][    T0] Built 1 zonelists, mobility grouping off.  Total pages: 2032
+[    0.000000][    T0] Kernel command line: console=ttySTM0,115200 rootwait root=/dev/mtdblock2 rootfst2
+[    0.000000][    T0] Dentry cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
+[    0.000000][    T0] Inode-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
+[    0.000000][    T0] mem auto-init: stack:off, heap alloc:off, heap free:off
+[    0.000000][    T0] Memory: 6188K/8192K available (1083K kernel code, 84K rwdata, 412K rodata, 64K i)
+[    0.000000][    T0] rcu: Preemptible hierarchical RCU implementation.
+[    0.000000][    T0] rcu:     RCU event tracing is enabled.
+[    0.000000][    T0]  Tasks RCU enabled.
+[    0.000000][    T0] rcu: RCU calculated value of scheduler-enlistment delay is 10 jiffies.
+[    0.000000][    T0] NR_IRQS: 16, nr_irqs: 16, preallocated irqs: 16
+[    0.000000][    T0] /soc/interrupt-controller@40013c00: bank0
+[    0.000000][    T0] random: get_random_bytes called from start_kernel+0x199/0x2d0 with crng_init=0
+[    0.000000][    T0] clocksource: arm_system_timer: mask: 0xffffff max_cycles: 0xffffff, max_idle_ns:s
+[    0.000000][    T0] ARM System timer initialized as clocksource
+[    0.000061][    T0] sched_clock: 32 bits at 100MHz, resolution 10ns, wraps every 21474836475ns
+[    0.000130][    T0] timer@40000c00: STM32 sched_clock registered
+[    0.000190][    T0] Switching to timer-based delay loop, resolution 10ns
+[    0.000236][    T0] timer@40000c00: STM32 delay timer registered
+[    0.000309][    T0] clocksource: timer@40000c00: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns
+[    0.000444][    T0] /soc/timer@40000c00: STM32 clockevent driver initialized (32 bits)
+[    0.001159][    T0] Calibrating delay loop (skipped), value calculated using timer frequency.. 200.0)
+[    0.001262][    T0] pid_max: default: 4096 minimum: 301
+[    0.001511][    T0] Mount-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
+[    0.001618][    T0] Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
+[    0.009710][    T1] rcu: Hierarchical SRCU implementation.
+[    0.012235][    T1] devtmpfs: initialized
+[    0.068977][    T1] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 1911s
+[    0.069159][    T1] pinctrl core: initialized pinctrl subsystem
+[    0.099017][    T1] stm32f746-pinctrl soc:pin-controller: No package detected, use default one
+[    0.108087][    T1] stm32f746-pinctrl soc:pin-controller: GPIOA bank added
+[    0.109516][    T1] stm32f746-pinctrl soc:pin-controller: GPIOB bank added
+[    0.112018][    T1] stm32f746-pinctrl soc:pin-controller: GPIOC bank added
+[    0.113410][    T1] stm32f746-pinctrl soc:pin-controller: GPIOD bank added
+[    0.115719][    T1] stm32f746-pinctrl soc:pin-controller: GPIOE bank added
+[    0.117120][    T1] stm32f746-pinctrl soc:pin-controller: GPIOF bank added
+[    0.119494][    T1] stm32f746-pinctrl soc:pin-controller: GPIOG bank added
+[    0.120941][    T1] stm32f746-pinctrl soc:pin-controller: GPIOH bank added
+[    0.123501][    T1] stm32f746-pinctrl soc:pin-controller: GPIOI bank added
+[    0.124893][    T1] stm32f746-pinctrl soc:pin-controller: GPIOJ bank added
+[    0.127331][    T1] stm32f746-pinctrl soc:pin-controller: GPIOK bank added
+[    0.127456][    T1] stm32f746-pinctrl soc:pin-controller: Pinctrl STM32 initialized
+[    0.157815][    T1] clocksource: Switched to clocksource timer@40000c00
+[    0.174892][    T1] workingset: timestamp_bits=30 max_order=11 bucket_order=0
+[    0.176452][    T1] jffs2: version 2.2. (NAND) �© 2001-2006 Red Hat, Inc.
+[    0.176974][    T1] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 253)
+[    0.177052][    T1] io scheduler mq-deadline registered
+[    0.177108][    T1] io scheduler kyber registered
+[    0.181232][    T1] STM32 USART driver initialized
+[    0.183564][    T1] 40011000.serial: ttySTM0 at MMIO 0x40011000 (irq = 31, base_baud = 6250000) is at
+[    0.629228][    T1] printk: console [ttySTM0] enabled
+[    0.636324][    T1] stm32-usart 40011000.serial: rx dma alloc failed
+[    0.642776][    T1] stm32-usart 40011000.serial: interrupt mode used for rx (no dma)
+[    0.650540][    T1] stm32-usart 40011000.serial: tx dma alloc failed
+[    0.656773][    T1] stm32-usart 40011000.serial: interrupt mode used for tx (no dma)
+[    0.678175][    T1] spi-nor spi0.0: w25q128 (16384 Kbytes)
+[    0.683648][    T1] 3 fixed-partitions partitions found on MTD device spi0.0
+[    0.690747][    T1] Creating 3 MTD partitions on "spi0.0":
+[    0.696192][    T1] 0x000000000000-0x000000020000 : "dtb"
+[    0.725715][    T1] 0x000000020000-0x000000320000 : "linux"
+[    0.757099][    T1] 0x000000320000-0x000000720000 : "rootfs"
+[    0.935000][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00011124: 0xd
+[    0.945388][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00011128: 0xd
+[    0.955692][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0001112c: 0xd
+[    0.965861][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00011130: 0xd
+[    0.976006][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00011134: 0xd
+[    0.986157][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00011138: 0xd
+[    0.996305][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00011140: 0xd
+[    1.006463][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00011144: 0xd
+[    1.016624][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00011148: 0xd
+[    1.026772][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0001114c: 0xd
+[    1.036906][    T1] jffs2: Further such events for this erase block will not be printed
+[    1.100842][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00063374: 0xd
+[    1.111072][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00063378: 0xd
+[    1.121229][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0006337c: 0xd
+[    1.131372][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00063380: 0xd
+[    1.141529][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00063384: 0xd
+[    1.151683][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00063388: 0xd
+[    1.161831][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00063390: 0xd
+[    1.171987][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00063394: 0xd
+[    1.182143][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00063398: 0xd
+[    1.192298][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0006339c: 0xd
+[    1.202433][    T1] jffs2: Further such events for this erase block will not be printed
+[    1.229375][    T1] jffs2: jffs2_scan_inode_node(): CRC failed on node at 0x0008c6f4: Read 0x17ce5be5
+[    1.247590][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00099344: 0xd
+[    1.257886][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00099348: 0xd
+[    1.268032][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0009934c: 0xd
+[    1.278185][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00099350: 0xd
+[    1.288342][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00099354: 0xd
+[    1.298499][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00099358: 0xd
+[    1.308653][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00099360: 0xd
+[    1.318802][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00099364: 0xd
+[    1.328959][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x00099368: 0xd
+[    1.339114][    T1] jffs2: jffs2_scan_eraseblock(): Magic bitmask 0x1985 not found at 0x0009936c: 0xd
+[    1.349246][    T1] jffs2: Further such events for this erase block will not be printed
+[    1.383477][    T1] VFS: Mounted root (jffs2 filesystem) readonly on device 31:2.
+[    1.403927][    T1] devtmpfs: mounted
+[    1.408286][    T1] Freeing unused kernel memory: 64K
+[    1.413211][    T1] This architecture does not have kernel memory protection.
+[    1.420443][    T1] Run /sbin/init as init process
+[    1.425098][    T1]   with arguments:
+[    1.428839][    T1]     /sbin/init
+[    1.432129][    T1]   with environment:
+[    1.435948][    T1]     HOME=/
+[    1.439067][    T1]     TERM=linux
+[    1.444930][    T1] jffs2: notice: (1) jffs2_get_inode_nodes: Node header CRC failed at 0x052624. {1}
+[    1.458003][    T1] jffs2: notice: (1) jffs2_get_inode_nodes: Node header CRC failed at 0x051054. {1}
+[    1.487308][    T1] jffs2: notice: (1) jffs2_get_inode_nodes: Node header CRC failed at 0x043eb4. {1}

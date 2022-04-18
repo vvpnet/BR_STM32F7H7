@@ -1,0 +1,215 @@
+## Ready for binary (xmodem) download to 0xD0008000 at 115200 bps...                              
+C## Total Size      = 0x001772c8 = 1536712 Bytes                                                  
+U-Boot > loadx 0xd0300000                                                                         
+## Ready for binary (xmodem) download to 0xD0300000 at 115200 bps...                              
+C## Total Size      = 0x00003a14 = 14868 Bytes                                                    
+U-Boot > bootz 0xd0008000 - 0xd0300000                                                            
+Kernel image @ 0xd0008000 [ 0x000000 - 0x1772c8 ]                                                 
+## Flattened Device Tree blob at d0300000                                                         
+   Booting using the fdt blob at 0xd0300000                                                       
+   Loading Device Tree to d059a000, end d05a0a13 ... OK                                           
+                                                                                                  
+Starting kernel ...                                                                               
+                                                                                                  
+Uncompressing Linux... done, booting the kernel.                                                  
+[    0.000000][    T0] Booting Linux on physical CPU 0x0                                          
+[    0.000000][    T0] Linux version 5.6.16MODULE (vpopov@ThinkPad-P14s) (gcc version 11.2.0 (Buildroot 0.3-1-g407bfa2
+[    0.000000][    T0] CPU: ARMv7-M [411fc270] revision 0 (ARMv7M), cr=00000000                   
+[    0.000000][    T0] CPU: PIPT / VIPT nonaliasing data cache, PIPT instruction cache            
+[    0.000000][    T0] OF: fdt: Machine model: STMicroelectronics STM32F767IGT6-LQFP176 board     
+[    0.000000][    T0] printk: debug: ignoring loglevel setting.                                  
+[    0.000000][    T0] Using ARMv7 PMSA Compliant MPU. Region independence: No, Used 2 of 8 regions
+[    0.000000][    T0] On node 0 totalpages: 2048                                                 
+[    0.000000][    T0]   Normal zone: 16 pages used for memmap                                    
+[    0.000000][    T0]   Normal zone: 0 pages reserved                                            
+[    0.000000][    T0]   Normal zone: 2048 pages, LIFO batch:0                                    
+[    0.000000][    T0] pcpu-alloc: s0 r0 d32768 u32768 alloc=1*32768                              
+[    0.000000][    T0] pcpu-alloc: [0] 0                                                          
+[    0.000000][    T0] Built 1 zonelists, mobility grouping off.  Total pages: 2032               
+[    0.000000][    T0] Kernel command line: console=ttySTM0,115200 earlyprintk consoleblank=0 ignore_loglevel
+[    0.000000][    T0] Dentry cache hash table entries: 1024 (order: 0, 4096 bytes, linear)       
+[    0.000000][    T0] Inode-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)        
+[    0.000000][    T0] mem auto-init: stack:off, heap alloc:off, heap free:off                    
+[    0.000000][    T0] Memory: 5780K/8192K available (1084K kernel code, 84K rwdata, 412K rodata, 468K init, 110K bss)
+[    0.000000][    T0] rcu: Preemptible hierarchical RCU implementation.                          
+[    0.000000][    T0] rcu:     RCU event tracing is enabled.                                     
+[    0.000000][    T0]  Tasks RCU enabled.                                                        
+[    0.000000][    T0] rcu: RCU calculated value of scheduler-enlistment delay is 10 jiffies.     
+[    0.000000][    T0] NR_IRQS: 16, nr_irqs: 16, preallocated irqs: 16                            
+[    0.000000][    T0] /soc/interrupt-controller@40013c00: bank0                                  
+[    0.000000][    T0] random: get_random_bytes called from start_kernel+0x1d1/0x348 with crng_init=0
+[    0.000000][    T0] clocksource: arm_system_timer: mask: 0xffffff max_cycles: 0xffffff, max_idle_ns: 298634427 ns
+[    0.000000][    T0] ARM System timer initialized as clocksource                                
+[    0.000063][    T0] sched_clock: 32 bits at 100MHz, resolution 10ns, wraps every 21474836475ns 
+[    0.000132][    T0] timer@40000c00: STM32 sched_clock registered                               
+[    0.000193][    T0] Switching to timer-based delay loop, resolution 10ns                       
+[    0.000237][    T0] timer@40000c00: STM32 delay timer registered                               
+[    0.000312][    T0] clocksource: timer@40000c00: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604467s
+[    0.000445][    T0] /soc/timer@40000c00: STM32 clockevent driver initialized (32 bits)         
+[    0.001154][    T0] Calibrating delay loop (skipped), value calculated using timer frequency.. 200.00 BogoMIPS (lp)
+[    0.001251][    T0] pid_max: default: 4096 minimum: 301
+[    0.001514][    T0] Mount-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
+[    0.001622][    T0] Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
+[    0.009666][    T1] rcu: Hierarchical SRCU implementation.
+[    0.012190][    T1] devtmpfs: initialized
+[    0.072797][    T1] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 s
+[    0.072984][    T1] pinctrl core: initialized pinctrl subsystem
+[    0.103387][    T1] stm32f746-pinctrl soc:pin-controller: No package detected, use default one
+[    0.112316][    T1] stm32f746-pinctrl soc:pin-controller: GPIOA bank added
+[    0.113739][    T1] stm32f746-pinctrl soc:pin-controller: GPIOB bank added
+[    0.116082][    T1] stm32f746-pinctrl soc:pin-controller: GPIOC bank added
+[    0.117458][    T1] stm32f746-pinctrl soc:pin-controller: GPIOD bank added
+[    0.119833][    T1] stm32f746-pinctrl soc:pin-controller: GPIOE bank added
+[    0.121217][    T1] stm32f746-pinctrl soc:pin-controller: GPIOF bank added
+[    0.123775][    T1] stm32f746-pinctrl soc:pin-controller: GPIOG bank added
+[    0.125197][    T1] stm32f746-pinctrl soc:pin-controller: GPIOH bank added
+[    0.127527][    T1] stm32f746-pinctrl soc:pin-controller: GPIOI bank added
+[    0.128931][    T1] stm32f746-pinctrl soc:pin-controller: GPIOJ bank added
+[    0.131372][    T1] stm32f746-pinctrl soc:pin-controller: GPIOK bank added
+[    0.131495][    T1] stm32f746-pinctrl soc:pin-controller: Pinctrl STM32 initialized
+[    0.162303][    T1] clocksource: Switched to clocksource timer@40000c00
+[    0.405259][    T1] workingset: timestamp_bits=30 max_order=11 bucket_order=0
+[    0.407872][    T1] jffs2: version 2.2. (NAND) �© 2001-2006 Red Hat, Inc.
+[    0.408385][    T1] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 253)
+[    0.408468][    T1] io scheduler mq-deadline registered
+[    0.408518][    T1] io scheduler kyber registered
+[    0.413798][    T1] STM32 USART driver initialized
+[    0.416261][    T1] 40011000.serial: ttySTM0 at MMIO 0x40011000 (irq = 31, base_baud = 6250000) is a stm32-usart
+[    0.867692][    T1] printk: console [ttySTM0] enabled
+[    0.874878][    T1] stm32-usart 40011000.serial: rx dma alloc failed
+[    0.881134][    T1] stm32-usart 40011000.serial: interrupt mode used for rx (no dma)
+[    0.889062][    T1] stm32-usart 40011000.serial: tx dma alloc failed
+[    0.895399][    T1] stm32-usart 40011000.serial: interrupt mode used for tx (no dma)
+[    0.917746][    T1] spi-nor spi0.0: w25q128 (16384 Kbytes)
+[    0.923420][    T1] 3 fixed-partitions partitions found on MTD device spi0.0
+[    0.930350][    T1] Creating 3 MTD partitions on "spi0.0":
+[    0.935980][    T1] 0x000000000000-0x000000020000 : "dtb"
+[    0.960366][    T1] 0x000000020000-0x000000320000 : "linux"
+[    0.991516][    T1] 0x000000320000-0x000000720000 : "rootfs"
+[    1.160826][    T1] Freeing unused kernel memory: 468K
+[    1.166011][    T1] This architecture does not have kernel memory protection.
+[    1.173108][    T1] Run /init as init process
+[    1.177350][    T1]   with arguments:
+[    1.180997][    T1]     /init
+[    1.184035][    T1]     earlyprintk
+[    1.187421][    T1]   with environment:
+[    1.191243][    T1]     HOME=/
+[    1.194362][    T1]     TERM=linux
+[    1.197666][    T1]     consoleblank=0
+can't run '/bin/hostname': No such file or directory
+[    1.355145][   T29] cat: page allocation failure: order:7, mode:0xcc0(GFP_KERNEL), nodemask=(null)
+[    1.364357][   T29] CPU: 0 PID: 29 Comm: cat Not tainted 5.6.16MODULE #27
+[    1.371010][   T29] Hardware name: STM32 (Device Tree Support)
+[    1.377153][   T29] [<d000c259>] (unwind_backtrace) from [<d000b517>] (show_stack+0xb/0xc)
+[    1.385665][   T29] [<d000b517>] (show_stack) from [<d0052ef3>] (warn_alloc+0x63/0xe8)
+[    1.393664][   T29] [<d0052ef3>] (warn_alloc) from [<d00532cf>] (__alloc_pages_nodemask+0x349/0x576)
+[    1.402838][   T29] [<d00532cf>] (__alloc_pages_nodemask) from [<d005350b>] (__get_free_pages+0xf/0x24)
+[    1.412141][   T29] [<d005350b>] (__get_free_pages) from [<d0053787>] (alloc_pages_exact+0x33/0x44)
+[    1.421286][   T29] [<d0053787>] (alloc_pages_exact) from [<d0050dcf>] (do_mmap+0x465/0x5a2)
+[    1.429756][   T29] [<d0050dcf>] (do_mmap) from [<d004c679>] (vm_mmap_pgoff+0x5d/0x88)
+[    1.437723][   T29] [<d004c679>] (vm_mmap_pgoff) from [<d0083c51>] (load_flat_file+0x3a5/0x4e8)
+[    1.446457][   T29] [<d0083c51>] (load_flat_file) from [<d0083f61>] (load_flat_binary+0x49/0x2b8)
+[    1.455363][   T29] [<d0083f61>] (load_flat_binary) from [<d005c4ad>] (search_binary_handler+0x61/0xe0)
+[    1.464881][   T29] [<d005c4ad>] (search_binary_handler) from [<d005c8ab>] (__do_execve_file+0x37f/0x424)
+[    1.474489][   T29] [<d005c8ab>] (__do_execve_file) from [<d005c981>] (do_execve+0x17/0x1a)
+[    1.482855][   T29] [<d005c981>] (do_execve) from [<d0009001>] (ret_fast_syscall+0x1/0x5c)
+[    1.490991][   T29] Exception stack(0xd0199fa8 to 0xd0199ff0)
+[    1.496842][   T29] 9fa0:                   d019aff6 d03ddf94 d019aff6 d01962d8 d035f688 0000000b
+[    1.505694][   T29] 9fc0: d019aff6 d03ddf94 d03dda78 0000000b d019affb 00000ffb d03c6554 00000000
+[    1.514527][   T29] 9fe0: 00000002 d03dda78 d038e9f3 d0396854
+[    1.520166][   T29] Mem-Info:
+[    1.523261][   T29] active_anon:0 inactive_anon:0 isolated_anon:0
+[    1.523261][   T29]  active_file:0 inactive_file:0 isolated_file:0
+[    1.523261][   T29]  unevictable:225 dirty:0 writeback:0 unstable:0
+[    1.523261][   T29]  slab_reclaimable:0 slab_unreclaimable:576
+[    1.523261][   T29]  mapped:0 shmem:0 pagetables:0 bounce:0
+[    1.523261][   T29]  free:299 free_pcp:0 free_cma:0
+[    1.558017][   T29] Node 0 active_anon:0kB inactive_anon:0kB active_file:0kB inactive_file:0kB unevictable:900kB io
+[    1.580028][   T29] Normal free:1196kB min:304kB low:380kB high:456kB reserved_highatomic:0KB active_anon:0kB inacB
+[    1.608462][   T29] lowmem_reserve[]: 0 0
+[    1.612453][   T29] Normal: 1*4kB (U) 1*8kB (U) 0*16kB 1*32kB (U) 0*64kB 5*128kB (U) 2*256kB (U) 0*512kB 0*1024kB B
+[    1.625164][   T29] 237 total pagecache pages
+[    1.629414][   T29] 2048 pages RAM
+[    1.632884][   T29] 0 pages HighMem/MovableOnly
+[    1.637314][   T29] 486 pages reserved
+[    1.641064][   T29] nommu: Allocation of length 385024 from process 29 (cat) failed
+[    1.648834][   T29] active_anon:0 inactive_anon:0 isolated_anon:0
+[    1.648834][   T29]  active_file:0 inactive_file:0 isolated_file:0
+[    1.648834][   T29]  unevictable:225 dirty:0 writeback:0 unstable:0
+[    1.648834][   T29]  slab_reclaimable:0 slab_unreclaimable:576
+[    1.648834][   T29]  mapped:0 shmem:0 pagetables:0 bounce:0
+[    1.648834][   T29]  free:299 free_pcp:0 free_cma:0
+[    1.683592][   T29] Node 0 active_anon:0kB inactive_anon:0kB active_file:0kB inactive_file:0kB unevictable:900kB io
+[    1.705594][   T29] Normal free:1196kB min:304kB low:380kB high:456kB reserved_highatomic:0KB active_anon:0kB inacB
+[    1.734027][   T29] lowmem_reserve[]: 0 0
+[    1.737940][   T29] Normal: 1*4kB (U) 1*8kB (U) 0*16kB 1*32kB (U) 0*64kB 5*128kB (U) 2*256kB (U) 0*512kB 0*1024kB B
+[    1.750641][   T29] 237 total pagecache pages
+[    1.754998][   T29] binfmt_flat: Unable to allocate RAM for process text/data, errno -12
+Saving random seed: [    1.773127][   T30] nommu: Allocation of length 385024 from process 30 (touch) failed
+[    1.780903][   T30] active_anon:0 inactive_anon:0 isolated_anon:0
+[    1.780903][   T30]  active_file:0 inactive_file:0 isolated_file:0
+[    1.780903][   T30]  unevictable:225 dirty:0 writeback:0 unstable:0
+[    1.780903][   T30]  slab_reclaimable:0 slab_unreclaimable:576
+[    1.780903][   T30]  mapped:0 shmem:0 pagetables:0 bounce:0
+[    1.780903][   T30]  free:393 free_pcp:0 free_cma:0
+[    1.815890][   T30] Node 0 active_anon:0kB inactive_anon:0kB active_file:0kB inactive_file:0kB unevictable:900kB io
+[    1.838323][   T30] Normal free:1588kB min:304kB low:380kB high:456kB reserved_highatomic:0KB active_anon:0kB inacB
+[    1.866961][   T30] lowmem_reserve[]: 0 0
+[    1.870869][   T30] Normal: 1*4kB (U) 2*8kB (U) 2*16kB (U) 2*32kB (U) 1*64kB (U) 5*128kB (U) 3*256kB (U) 0*512kB 0B
+[    1.884477][   T30] 237 total pagecache pages
+[    1.888725][   T30] binfmt_flat: Unable to allocate RAM for process text/data, errno -12
+SKIP (read-only [    1.898924][    C0] random: fast init done
+file system detected)
+
+Welcome to Linux/STM32F7-Series
+(none) login: root
+Password: 
+Jan  1 00:00:30 login[31]: root login on 'console'
+
+
+BusyBox v1.34.1 (2022-04-15 12:52:57 +06) hush - the humble shell
+Enter 'help' for a list of built-in commands.
+
+~ # free
+              total        used        free      shared  buff/cache   available
+Mem:           6248        3672        1624           0         952        1156
+~ # cat /proc/meminfo 
+MemTotal:           6248 kB
+MemFree:            1548 kB
+MemAvailable:       1092 kB
+Buffers:               0 kB
+Cached:              952 kB
+SwapCached:            0 kB
+Active:                0 kB
+Inactive:              0 kB
+Active(anon):          0 kB
+Inactive(anon):        0 kB
+Active(file):          0 kB
+Inactive(file):        0 kB
+Unevictable:         900 kB
+Mlocked:               0 kB
+MmapCopy:           1184 kB
+SwapTotal:             0 kB
+SwapFree:              0 kB
+Dirty:                 0 kB
+Writeback:             0 kB
+AnonPages:             0 kB
+Mapped:                0 kB
+Shmem:                 0 kB
+KReclaimable:          0 kB
+Slab:               2304 kB
+SReclaimable:          0 kB
+SUnreclaim:         2304 kB
+KernelStack:         160 kB
+PageTables:            0 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:        3124 kB
+Committed_AS:          0 kB
+VmallocTotal:          0 kB
+VmallocUsed:           0 kB
+VmallocChunk:          0 kB
+Percpu:               32 kB
+~ # 
+ 

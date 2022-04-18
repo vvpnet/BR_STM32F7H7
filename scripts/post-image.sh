@@ -35,6 +35,12 @@ if [ -f $fdt ]; then
     cp $fdt ${dir_publish1}/${devstm1}.dtb
 fi
 
+xipimage=${BUILD_DIR}/linux-${ver_kernel}/arch/arm/boot/xipImage
+if [ -f $xipimage ]; then
+    echo "Copy xipImage to "${dir_publish1}
+    cp $xipimage ${dir_publish1}/${devstm1}
+fi
+
 uboot=${BUILD_DIR}/uboot-${ver_uboot}/u-boot.bin
 if [ -f $uboot ]; then
     echo "Copy uboot.bin to "${dir_publish1}

@@ -55,16 +55,38 @@ LOADLINUX whitout fdt:
 sf probe 0 && sf read ${kernel_addr_r} 0x40000 0x300000 && bootm ${kernel_addr_r}
 
 
-**********************************************************************************************
-UPDATE DEVICE-TREE:
-mw.b 0xd0008000 ff 00x20000 && loadx 0xd0008000 && sf probe 0 && sf erase 0x300000 0x20000 && sf write 0xd0008000 0x300000 0x20000 
-
-UPDATE KERNEL:
+->>>> [F767L] **********************************************************************************************
+UPDATE KERNEL XIP:
 mw.b 0xd0008000 ff 0x300000 && loadx 0xd0008000 && sf probe 0 && sf erase 0x0 0x300000 && sf write 0xd0008000 0x0 0x300000 
 
 RUN BOOTM XIP KERNEL RAM:
-setenv bootargs 'root=/dev/ram console=ttySTM0,115200' && && sf probe 0 && sf read ${fdt_addr_r} 0x300000 0x20000 && bootm 0x90000000
+setenv bootargs 'root=/dev/ram console=ttySTM0,115200' && && sf probe 0 && sf read ${fdt_addr_r} 0x300000 0x20000 && bootm 0x90000000 - ${fdt_addr_r}
 
+UPDATE DEVICE-TREE:
+mw.b ${kernel_addr_r} ff 0x20000 && loadx ${kernel_addr_r} && sf probe 0 && sf erase 0x0 0x20000 && sf write ${kernel_addr_r} 0x0 0x20000 
+
+UPDATE KERNEL:
+mw.b ${kernel_addr_r} ff 0x300000 && loadx ${kernel_addr_r} && sf probe 0 && sf erase 0x20000 0x300000 && sf write ${kernel_addr_r} 0x20000 0x300000 
+
+UPDATE ROOTFS:
+mw.b 0xd0008000 0xFF 0x400000 && loadx 0xd0008000 && sf probe 0 && sf erase 0x320000 0x400000 && sf write 0xd0008000 0x320000 0x400000 
+
+RUN BOOTM KERNEL JFFS2:
+env set bootargs "console=ttySTM0,115200 rootwait root=/dev/mtdblock2 rootfstype=jffs2" && sf probe 0 && sf read 0xd0008000 0x0 0x20000 && sf read 0xd0020000 0x20000 0x300000 && bootm 0xd0020000 - 0xd0008000
+
+RUN BOOTZ KERNEL RAM:
+env set bootargs "root=/dev/ram console=ttySTM0,115200" && sf probe 0 && sf read 0xd0008000 0x0 0x20000 && sf read 0xd0020000 0x20000 0x300000 && bootz 0xd0020000 - 0xd0008000
+
+
+->>>> [F767APOLLO] **********************************************************************************************
+UPDATE DEVICE-TREE:
+mw.b 0xc0008000 ff 0x20000 && loadx 0xc0008000 && sf probe 0 && sf erase 0x0 0x20000 && sf write 0xc0008000 0x0 0x20000 
+
+UPDATE KERNEL:
+mw.b 0xc0008000 ff 0x400000 && loadx 0xc0008000 && sf probe 0 && sf write 0xc0008000 0x20000 0x400000 
+
+RUN BOOTz RAM:
+sf probe 0 && sf read 0xc0008000 0x20000 0x400000 && sf read 0xc0700000 0x0 0x20000 && bootz 0xc0008000 - 0xc0700000
 
 
 
