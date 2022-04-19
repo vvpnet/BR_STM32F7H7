@@ -71,12 +71,22 @@ mw.b ${kernel_addr_r} ff 0x300000 && loadx ${kernel_addr_r} && sf probe 0 && sf 
 UPDATE ROOTFS:
 mw.b 0xd0008000 0xFF 0x400000 && loadx 0xd0008000 && sf probe 0 && sf erase 0x320000 0x400000 && sf write 0xd0008000 0x320000 0x400000 
 
-RUN BOOTM KERNEL JFFS2:
-env set bootargs "console=ttySTM0,115200 rootwait root=/dev/mtdblock2 rootfstype=jffs2" && sf probe 0 && sf read 0xd0008000 0x0 0x20000 && sf read 0xd0020000 0x20000 0x300000 && bootm 0xd0020000 - 0xd0008000
+RUN BOOTM KERNEL QSPI JFFS2:
+env set bootargs "console=ttySTM0,115200 rootwait root=/dev/mtdblock2 rootfstype=jffs2" && sf probe 0 && sf read 0xd0008000 0x0 0x20000 && sf read 0xd0028000 0x20000 0x300000 && bootm 0xd0028000 - 0xd0008000
 
-RUN BOOTZ KERNEL RAM:
-env set bootargs "root=/dev/ram console=ttySTM0,115200" && sf probe 0 && sf read 0xd0008000 0x0 0x20000 && sf read 0xd0020000 0x20000 0x300000 && bootz 0xd0020000 - 0xd0008000
+RUN BOOTm KERNEL QSPI squashfs:
+env set bootargs "console=ttySTM0,115200 rootwait root=/dev/mtdblock2 ro rootfstype=squashfs" && sf probe 0 && sf read 0xd0008000 0x0 0x20000 && sf read 0xd0028000 0x20000 0x300000 && bootm 0xd0028000 - 0xd0008000
 
+RUN BOOTz KERNEL QSPI squashfs:
+env set bootargs "console=ttySTM0,115200 rootwait root=/dev/mtdblock2 ro rootfstype=squashfs" && sf probe 0 && sf read 0xd0008000 0x0 0x20000 && sf read 0xd0028000 0x20000 0x300000 && bootz 0xd0028000 - 0xd0008000
+
+RUN BOOTZ KERNEL QSPI RAM:
+env set bootargs "root=/dev/ram console=ttySTM0,115200" && sf probe 0 && sf read 0xd0008000 0x0 0x20000 && sf read 0xd0028000 0x20000 0x300000 && bootz 0xd0028000 - 0xd0008000
+
+RUN BOOTZ KERNEL LOADX RAM:
+loadx 0xd0028000 && env set bootargs "root=/dev/ram console=ttySTM0,115200" && sf probe 0 && sf read 0xd0008000 0x0 0x20000 && bootz 0xd0028000 - 0xd0008000
+
+setenv mtdparts mtdparts=w25q128fw@0:128k(dtb),3m(linux),4m(rootfs)
 
 ->>>> [F767APOLLO] **********************************************************************************************
 UPDATE DEVICE-TREE:

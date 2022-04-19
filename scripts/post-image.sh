@@ -38,7 +38,7 @@ fi
 xipimage=${BUILD_DIR}/linux-${ver_kernel}/arch/arm/boot/xipImage
 if [ -f $xipimage ]; then
     echo "Copy xipImage to "${dir_publish1}
-    cp $xipimage ${dir_publish1}/${devstm1}
+    cp $xipimage ${dir_publish1}
 fi
 
 uboot=${BUILD_DIR}/uboot-${ver_uboot}/u-boot.bin
@@ -57,4 +57,10 @@ rootfsjffs2=${BINARIES_DIR}/rootfs.jffs2
 if [ -f $rootfsjffs2 ]; then
     echo "Copy RootFS JFFS2 to "${dir_publish1}
     cp $rootfsjffs2 ${dir_publish1}
+fi
+
+rootfssquashfs=${BINARIES_DIR}/rootfs.squashfs
+if [ -f $rootfssquashfs ]; then
+    echo "Copy RootFS squashfs to "${dir_publish1}
+    cp $rootfssquashfs ${dir_publish1}
 fi
