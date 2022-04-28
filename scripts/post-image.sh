@@ -64,3 +64,39 @@ if [ -f $rootfssquashfs ]; then
     echo "Copy RootFS squashfs to "${dir_publish1}
     cp $rootfssquashfs ${dir_publish1}
 fi
+
+rootfscramfs=${BINARIES_DIR}/rootfs.cramfs
+if [ -f $rootfscramfs ]; then
+    echo "Copy RootFS cramfs to "${dir_publish1}
+    cp $rootfscramfs ${dir_publish1}
+fi
+
+rootfsaxfs=${BINARIES_DIR}/rootfs.axfs
+if [ -f $rootfsaxfs ]; then
+    echo "Copy RootFS axfs to "${dir_publish1}
+    cp $rootfsaxfs ${dir_publish1}
+fi
+
+rootfsbtrfs=${BINARIES_DIR}/rootfs.btrfs
+if [ -f $rootfsbtrfs ]; then
+    echo "Copy RootFS btrfs to "${dir_publish1}
+    cp $rootfsbtrfs ${dir_publish1}
+fi
+
+rootfsext2=${BINARIES_DIR}/rootfs.ext2
+if [ -f $rootfsext2 ]; then
+    echo "Copy RootFS EXT2 to "${dir_publish1}
+    cp $rootfsext2 ${dir_publish1}
+fi
+
+rootfsext3=${BINARIES_DIR}/rootfs.ext3
+if [ -f $rootfsext3 ]; then
+    echo "Copy RootFS EXT3 to "${dir_publish1}
+    cp $rootfsext3 ${dir_publish1}
+fi
+
+rootfsext4=${BINARIES_DIR}/rootfs.ext4
+if [ -f $rootfsext3 ]; then
+    echo "Copy RootFS EXT4 to "${dir_publish1}
+    cp $rootfsext4 ${dir_publish1}
+fi
