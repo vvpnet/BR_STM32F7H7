@@ -96,7 +96,14 @@ if [ -f $rootfsext3 ]; then
 fi
 
 rootfsext4=${BINARIES_DIR}/rootfs.ext4
-if [ -f $rootfsext3 ]; then
+if [ -f $rootfsext4 ]; then
     echo "Copy RootFS EXT4 to "${dir_publish1}
     cp $rootfsext4 ${dir_publish1}
 fi
+
+rootfsubifs=${BINARIES_DIR}/rootfs.ubifs
+if [ -f $rootfsubifs ]; then
+    echo "Copy RootFS UBIFS to "${dir_publish1}
+    cp $rootfsubifs ${dir_publish1}
+fi
+

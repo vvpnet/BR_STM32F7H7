@@ -63,7 +63,7 @@ RUN BOOTM XIP KERNEL RAM:
 setenv bootargs 'root=/dev/ram console=ttySTM0,115200' && && sf probe 0 && sf read ${fdt_addr_r} 0x300000 0x20000 && bootm 0x90000000 - ${fdt_addr_r}
 
 UPDATE DEVICE-TREE:
-mw.b ${kernel_addr_r} ff 0x20000 && loadx ${kernel_addr_r} && sf probe 0 && sf erase 0x0 0x20000 && sf write ${kernel_addr_r} 0x0 0x20000 
+mw.b 0xd0008000 ff 0x20000 && loadx 0xd0008000 && sf probe 0 && sf erase 0x0 0x20000 && sf write 0xd0008000 0x0 0x20000 
 
 UPDATE KERNEL:
 mw.b 0xd0008000 ff 0x300000 && loadx 0xd0008000 && sf probe 0 && sf erase 0x20000 0x300000 && sf write 0xd0008000 0x20000 0x300000 
@@ -90,9 +90,10 @@ RUN BOOTZ cramfs:
 setenv bootargs 'console=ttySTM0,115200 panic=5 rootwait root=/dev/mtdblock2 ro rootfstype=cramfs' && sf probe 0 && sf read 0xd0008000 0x0 0x20000 && sf read 0xd0028000 0x20000 0x300000 && bootz 0xd0028000 - 0xd0008000
 
 RUN BOOTZ EXT:
-set env bootargs 'console=ttySTM0,115200 panic=5 rootwait root=/dev/mtdblock2 ro rootfstype=ext4' && sf probe 0 && sf read 0xd0008000 0x0 0x20000 && sf read 0xd0028000 0x20000 0x300000 && bootz 0xd0028000 - 0xd0008000
+set env bootargs 'console=ttySTM0,115200 panic=5 rootwait root=/dev/mtdblock2 rw rootfstype=ext2' && sf probe 0 && sf read 0xd0008000 0x0 0x20000 && sf read 0xd0028000 0x20000 0x300000 && bootz 0xd0028000 - 0xd0008000
 
-
+RUN BOOTZ UBIFS:
+set env bootargs 'console=ttySTM0,115200 panic=5 rootwait root=/dev/mtdblock2 rw rootfstype=ubifs' && sf probe 0 && sf read 0xd0008000 0x0 0x20000 && sf read 0xd0028000 0x20000 0x300000 && bootz 0xd0028000 - 0xd0008000
 
 RUN BOOTZ XFS:
 setenv bootargs 'console=ttySTM0,115200 panic=5 rootwait rw root=/dev/mtdblock2 rootfstype=xfs' && sf probe 0 && sf read 0xd0008000 0x0 0x20000 && sf read 0xd0028000 0x20000 0x300000 && bootz 0xd0028000 - 0xd0008000

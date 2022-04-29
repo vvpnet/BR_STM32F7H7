@@ -1,8 +1,20 @@
 diff --git a/arch/arm/dts/stm32f746-disco-u-boot.dtsi b/arch/arm/dts/stm32f746-disco-u-boot.dtsi
-index 4f34fc9a8c..60b1282fe3 100644
+index 4f34fc9a8c..035c8a3bb9 100644
 --- a/arch/arm/dts/stm32f746-disco-u-boot.dtsi
 +++ b/arch/arm/dts/stm32f746-disco-u-boot.dtsi
-@@ -36,7 +36,7 @@
+@@ -26,24 +26,24 @@
+ 	backlight: backlight {
+ 		compatible = "gpio-backlight";
+ 		gpios = <&gpiok 3 0>;
+-		status = "okay";
++		status = "disabled";
+ 	};
+ 
+ 	button1 {
+ 		compatible = "st,button1";
+-		button-gpio = <&gpioi 11 0>;
++		button-gpio = <&gpioi 1 0>;
+ 	};
  
  	led1 {
  		compatible = "st,led1";
@@ -11,7 +23,25 @@ index 4f34fc9a8c..60b1282fe3 100644
  	};
  
  	panel-rgb@0 {
-@@ -80,7 +80,7 @@
+ 		compatible = "simple-panel";
+ 		backlight = <&backlight>;
+ 		enable-gpios = <&gpioi 12 0>;
+-		status = "okay";
++		status = "disabled";
+ 
+ 		display-timings {
+ 			timing@0 {
+@@ -71,8 +71,7 @@
+ 			resets = <&rcc STM32F7_APB2_RESET(LTDC)>;
+ 			clocks = <&rcc 0 STM32F7_APB2_CLOCK(LTDC)>;
+ 			pinctrl-0 = <&ltdc_pins>;
+-
+-			status = "okay";
++			status = "disabled";
+ 			u-boot,dm-pre-reloc;
+ 		};
+ 	};
+@@ -80,7 +79,7 @@
  
  &fmc {
  	/* Memory configuration from sdram datasheet MT48LC_4M32_B2B5-6A */
@@ -20,7 +50,7 @@ index 4f34fc9a8c..60b1282fe3 100644
  		u-boot,dm-pre-reloc;
  		st,sdram-control = /bits/ 8 <NO_COL_8
  					     NO_ROW_12
-@@ -156,11 +156,11 @@
+@@ -156,11 +155,11 @@
  				 <STM32_PINMUX('F', 1, AF12)>, /* A1 */
  				 <STM32_PINMUX('F', 0, AF12)>, /* A0 */
  
@@ -35,7 +65,7 @@ index 4f34fc9a8c..60b1282fe3 100644
  				 <STM32_PINMUX('G', 8, AF12)>; /* SDCLK> */
  			slew-rate = <2>;
  		};
-@@ -204,10 +204,10 @@
+@@ -204,10 +203,10 @@
  		pins {
  			pinmux = <STM32_PINMUX('B', 2, AF9)>, /* CLK */
  				 <STM32_PINMUX('B', 6, AF10)>, /* BK1_NCS */
@@ -50,15 +80,54 @@ index 4f34fc9a8c..60b1282fe3 100644
  			slew-rate = <2>;
  		};
  	};
-@@ -229,7 +229,7 @@
+@@ -229,13 +228,43 @@
  
  &qspi {
  	reg = <0xA0001000 0x1000>, <0x90000000 0x1000000>;
 -	qflash0: n25q128a@0 {
-+	qflash0: w25q128fw@0 {
++	qflash0: w25q128@0 {
  		#address-cells = <1>;
  		#size-cells = <1>;
- 		compatible = "jedec,spi-nor";
+-		compatible = "jedec,spi-nor";
+-		spi-max-frequency = <108000000>;
++		compatible = "winboud,w25q128", "jedec,spi-nor";
++		spi-max-frequency = <104000000>;
+ 		spi-tx-bus-width = <4>;
+ 		spi-rx-bus-width = <4>;
+-		reg = <0>;
++		reg = <0x0>;
++
++		// Total 16 Mb
++		partitions {
++			compatible = "fixed-partitions";
++
++			// 128 Kbyte
++			partition@0 {
++				label = "dtb";
++				reg = <0x0 0x20000>;
++				read-only;
++			};
++
++			// 3 Mb
++			partition@20000 {
++				label = "linux";
++				reg = <0x20000 0x300000>;
++			};
++
++			// 4 Mb
++			partition@320000 {
++				label = "rootfs";
++				reg = <0x320000 0x400000>;
++			};
++
++			// 8 Mb
++			partition@720000 {
++				label = "data";
++				reg = <0x720000 0x800000>;
++			};
++		};
+ 	};
+ };
 diff --git a/arch/arm/dts/stm32f746-disco.dts b/arch/arm/dts/stm32f746-disco.dts
 index 9430dc08ec..59a326899d 100644
 --- a/arch/arm/dts/stm32f746-disco.dts
@@ -148,7 +217,7 @@ index 40f94ac772..1eb2e5a201 100644
  CONFIG_DM_MTD=y
  CONFIG_MTD_NOR_FLASH=y
 diff --git a/include/configs/stm32f746-disco.h b/include/configs/stm32f746-disco.h
-index 08d050adfa..5b207c07a0 100644
+index 08d050adfa..32b6c604e0 100644
 --- a/include/configs/stm32f746-disco.h
 +++ b/include/configs/stm32f746-disco.h
 @@ -16,10 +16,10 @@
@@ -165,7 +234,7 @@ index 08d050adfa..5b207c07a0 100644
  #endif
  
  /*
-@@ -43,23 +43,27 @@
+@@ -43,23 +43,32 @@
  
  #define CONFIG_SYS_CBSIZE		1024
  
@@ -176,23 +245,30 @@ index 08d050adfa..5b207c07a0 100644
  	func(MMC, mmc, 0)
  
  #include <config_distro_bootcmd.h>
- #define CONFIG_EXTRA_ENV_SETTINGS				\
+-#define CONFIG_EXTRA_ENV_SETTINGS				\
 -			"kernel_addr_r=0xC0008000\0"		\
-+			"kernel_addr_r=0xD0008000\0"		\
- 			"fdtfile=stm32f746-disco.dtb\0"	\
+-			"fdtfile=stm32f746-disco.dtb\0"	\
 -			"fdt_addr_r=0xC0408000\0"		\
 -			"scriptaddr=0xC0418000\0"		\
 -			"pxefile_addr_r=0xC0428000\0" \
 -			"ramdisk_addr_r=0xC0438000\0"		\
-+			"fdt_addr_r=0xD0408000\0"		\
-+			"pxefile_addr_r=0xD0428000\0" \
-+			"ipaddr=192.168.0.123\0" \
-+			"serverip=192.168.0.122\0" \
-+			"kernel_file=stm32f746/zImage\0" \
-+			"netboot=tftp ${fdt_addr_r} ${dtb_file} && tftp ${kernel_addr_r} ${kernel_file} && bootz ${kernel_addr_r} - ${fdt_addr_r}\0" \
++#define CONFIG_EXTRA_ENV_SETTINGS		\
++			"s_addr=0xd0008000\0"	\
++			"k_addr=0xd0028000\0"	\
++			"f_addr=0xd0008000\0"	\
++			"k_size=0x300000\0"	\
++			"f_size=0x20000\0"	\
++			"r_size=0x400000\0"	\
++			"f_offs=0x0\0"		\
++			"k_offs=0x20000\0"	\
++			"r_offs=0x320000\0"	\
++			"kup=mw.b ${s_addr} ff ${k_size} && loadx ${s_addr} && sf probe 0 && sf erase ${k_offs} ${k_size} && sf write ${s_addr} ${k_offs} ${k_size} \0" \
++			"fup=mw.b ${s_addr} ff ${f_size} && loadx ${s_addr} && sf probe 0 && sf erase ${f_offs} ${f_size} && sf write ${s_addr} ${f_offs} ${f_size} \0" \
++			"rup=mw.b ${s_addr} ff ${r_size} && loadx ${s_addr} && sf probe 0 && sf erase ${r_offs} ${r_size} && sf write ${s_addr} ${r_offs} ${r_size} \0" \
++			"rupr=mw.b ${s_addr} ff ${r_size} && loadx ${s_addr} && sf probe 0 && sf erase ${r_offs} ${r_size} && sf write ${s_addr} ${r_offs} ${r_size} && rzrc \0" \
++			"rzrc=setenv bootargs 'console=ttySTM0,115200 panic=5 rootwait root=/dev/mtdblock2 ro rootfstype=cramfs' && sf probe 0 && sf read ${f_addr} ${f_offs} ${f_size} && sf read ${k_addr} ${k_offs} ${k_size} && bootz ${k_addr} - ${f_addr} \0" \
++			"cboot=if test \"${button}\" = \"LOW\"; then run rzrc; fi; run base \0" \
 +			"spiboot=sf probe && sf read ${fdt_addr_r} 0 4000 && sf read ${kernel_addr_r} 10000 200000 && bootz ${kernel_addr_r} - ${fdt_addr_r}\0" \
-+			"mmcboot=mmc dev 0 && fatload mmc 0 ${fdt_addr_r} /${dtb_file} && fatload mmc 0 ${kernel_addr_r} /${kernel_file} && icache off && bootz ${kernel_addr_r} - ${fdt_addr_r}\0" \
-+			"updatespi=sf probe && tftp ${fdt_addr_r} ${dtb_file} && sf erase 0 10000 && sf write ${fdt_addr_r} 0 ${filesize} && tftp ${kernel_addr_r} ${kernel_file} && sf erase 10000 200000 && sf write ${kernel_addr_r} 10000 ${filesize}\0" \
 +			"conditionalboot=if test \"${button}\" = \"LOW\"; then run spiboot; fi; run mmcboot\0" \
  			BOOTENV
  

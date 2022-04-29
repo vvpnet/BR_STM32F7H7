@@ -76,7 +76,7 @@ uboot-menuconfig:
 	@cp $(dir_buildroot)/output/build/uboot-$(call getval,BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE)/.config $(call dirstm)/uboot.config
 	@echo "Saved Uboot config."
 
-uboot_rebuild:
+uboot-rebuild:
 	@echo $(call defstm)
 	make uboot-reconfigure -C $(dir_buildroot)
 

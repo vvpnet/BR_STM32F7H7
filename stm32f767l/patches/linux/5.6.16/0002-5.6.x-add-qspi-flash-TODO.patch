@@ -22,7 +22,7 @@ index fe4cfda72a47..8a9d77862715 100644
  	};
  };
 diff --git a/arch/arm/boot/dts/stm32f746-disco.dts b/arch/arm/boot/dts/stm32f746-disco.dts
-index ee4a78d77dca..0b58a39db062 100644
+index ee4a78d77dca..d7bd584bb037 100644
 --- a/arch/arm/boot/dts/stm32f746-disco.dts
 +++ b/arch/arm/boot/dts/stm32f746-disco.dts
 @@ -75,3 +75,46 @@ &usart1 {
@@ -33,43 +33,43 @@ index ee4a78d77dca..0b58a39db062 100644
 +&qspi {
 +	reg = <0xA0001000 0x1000>, <0x90000000 0x1000000>;
 +	status = "okay";
-+	qflash0: w25q128@0 {
++	qflash0: w25q128fw@0 {
 +		#address-cells = <1>;
 +		#size-cells = <1>;
-+		compatible = "winboud,w25q128";
-+		spi-max-frequency = <108000000>;
++		compatible = "winboud,w25q128fw", "jedec,spi-nor";
++		spi-max-frequency = <104000000>;
 +		spi-rx-bus-width = <4>;
 +		reg = <0x0>;
 +
-+		partition@fsbl-uboot {
-+                        label = "fsbl-uboot";
-+                        reg = <0x0 0xe0000>;
-+                };
++		// Total 16 Mb
++		partitions {
++			compatible = "fixed-partitions";
 +
-+                partition@uenv {
-+                        label = "uenv";
-+                        reg = <0xe0000 0x20000>;
-+                };
++			// 128 Kbyte
++			partition@0 {
++				label = "dtb";
++				reg = <0x0 0x20000>;
++				read-only;
++			};
 +
-+                partition@device-tree {
-+                        label = "device-tree";
-+                        reg = <0x100000 0x20000>;
-+                };
++			// 3 Mb
++			partition@20000 {
++				label = "linux";
++				reg = <0x20000 0x300000>;
++			};
 +
-+                partition@linux {
-+                        label = "linux";
-+                        reg = <0x120000 0x600000>;
-+                };
++			// 4 Mb
++			partition@320000 {
++				label = "rootfs";
++				reg = <0x320000 0x400000>;
++			};
 +
-+                partition@ramfs {
-+                        label = "ramfs";
-+                        reg = <0x720000 0x4E0000>;
-+                };
-+
-+                partition@bitstream {
-+                        label = "bitstream";
-+                        reg = <0xC00000 0x400000>;
-+                };
++			// 8 Mb
++			partition@720000 {
++				label = "data";
++				reg = <0x720000 0x800000>;
++			};
++		};
 +	};
 +};
 diff --git a/arch/arm/boot/dts/stm32f746.dtsi b/arch/arm/boot/dts/stm32f746.dtsi
